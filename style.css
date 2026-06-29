@@ -1,0 +1,35 @@
+/* style.css: Sayfanın görünümü (renk, yazı tipi, düzen).
+   Şimdilik minimum tutuldu; tasarım adımında geliştirilecek. */
+
+/* Tüm sayfa için temel ayarlar */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f4f6f8;
+  color: #1a1a1a;
+  margin: 0;
+  padding: 24px;
+}
+
+/* Üst başlık alanı */
+header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+header h1 {
+  margin-bottom: 4px;
+}
+
+header p {
+  color: #555;
+}
+
+/* Tek tek araç kartlarının görünümü */
+.kart {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  max-width: 400px;
+  margin: 0 auto; /* sayfada ortala */
+}
