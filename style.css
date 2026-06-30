@@ -24,12 +24,32 @@ header p {
   color: #555;
 }
 
+/* Kartların yerleştiği ızgara (grid) alanı.
+   Masaüstünde kartlar yan yana, dar ekranda otomatik alt alta gelir. */
+main {
+  max-width: 900px;
+  margin: 0 auto; /* tüm ızgarayı sayfada ortala */
+  display: grid;
+  gap: 16px; /* kartlar arası boşluk */
+  /* "Sığdığı kadar sütun aç, her sütun en az 250px olsun."
+     Ekran daralınca tek sütuna düşer -> kartlar alt alta dizilir. */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
 /* Tek tek araç kartlarının görünümü */
 .kart {
   background-color: #ffffff;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 16px;
-  max-width: 400px;
-  margin: 0 auto; /* sayfada ortala */
+}
+
+/* Dar ekranlar (telefon) için: boşlukları küçült */
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+  }
+  main {
+    gap: 12px;
+  }
 }
