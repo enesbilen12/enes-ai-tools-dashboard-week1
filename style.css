@@ -10,6 +10,14 @@ body {
   padding: 24px;
 }
 
+/* Alt bilgi (footer): ortalı ve soluk, sayfadan hafifçe ayrılmış. */
+.alt-bilgi {
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+  margin-top: 32px;
+}
+
 /* Üst başlık alanı */
 header {
   text-align: center;

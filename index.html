@@ -16,18 +16,24 @@
     <p>Yapay zeka araçlarını tek ekranda toplayan basit bir panel.</p>
   </header>
 
-  <!-- Arama kutusu: kullanıcı yazdıkça app.js kartları isme göre filtreler. -->
-  <div class="arama-alani">
+  <!-- Arama kutusu: kendi başına anlamlı bir bölüm olduğu için <section>. -->
+  <section class="arama-alani">
     <input
       type="text"
       id="arama"
       class="arama-kutusu"
       placeholder="Araç ara... (örn. chat)"
     />
-  </div>
+  </section>
 
-  <!-- Bu alan boş; kartları app.js içindeki renderTools() dolduracak. -->
+  <!-- Sayfanın ana içeriği: kartları app.js içindeki renderTools() dolduracak.
+       DİKKAT: Arama kutusu buraya konmaz; renderTools() <main> içini siler. -->
   <main></main>
+
+  <!-- Alt bilgi: proje hakkında kısa not. -->
+  <footer class="alt-bilgi">
+    <p>AI Araçları Paneli · Yazılım eğitimi 1. hafta projesi</p>
+  </footer>
 
   <!-- Davranışı (JavaScript) sayfanın en sonunda bağlıyoruz -->
   <script src="app.js"></script>
