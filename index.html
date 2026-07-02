@@ -7,7 +7,7 @@
   <title>AI Araçları Paneli</title>
 
   <!-- Görünümü buradan bağlıyoruz (style.css) -->
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css" /> 
 </head>
 
 <body>
@@ -16,7 +16,7 @@
     <p>Yapay zeka araçlarını tek ekranda toplayan basit bir panel.</p>
   </header>
 
-  <!-- Arama kutusu: kendi başına anlamlı bir bölüm olduğu için <section>. -->
+  <!-- Arama + kategori filtresi: kendi başına anlamlı bir bölüm (<section>). -->
   <section class="arama-alani">
     <input
       type="text"
@@ -24,6 +24,8 @@
       class="arama-kutusu"
       placeholder="Araç ara... (örn. chat)"
     />
+    <!-- Kategori menüsü boş; seçenekleri app.js verisinden dolduracak. -->
+    <select id="kategori" class="arama-kutusu"></select>
   </section>
 
   <!-- Sayfanın ana içeriği: kartları app.js içindeki renderTools() dolduracak.
