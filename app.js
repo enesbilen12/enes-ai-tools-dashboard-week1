@@ -93,10 +93,23 @@ function renderTools(gosterilecekAraclar = tools) {
 const FAVORI_ANAHTARI = "favoriler";
 
 // localStorage'dan favori isim listesini oku (kayıt yoksa boş dizi döndür).
+// try/catch: localStorage kapalıysa veya kayıt bozuksa uygulama çökmesin,
+// güvenli biçimde boş listeye dönsün.
 function favorileriYukle() {
-  const kayit = localStorage.getItem(FAVORI_ANAHTARI);
-  // localStorage sadece METİN saklar; JSON.parse ile diziye geri çeviriyoruz.
-  return kayit ? JSON.parse(kayit) : [];
+  try {
+    const kayit = localStorage.getItem(FAVORI_ANAHTARI);
+    if (!kayit) return []; // hiç kayıt yoksa boş liste
+
+    // localStorage sadece METİN saklar; JSON.parse ile diziye geri çeviriyoruz.
+    const liste = JSON.parse(kayit);
+
+    // Beklenen şey bir dizi; değilse (bozuk/yanlış veri) boş listeye dön.
+    return Array.isArray(liste) ? liste : [];
+  } catch (hata) {
+    // Sessizce yutmayalım: geliştirici F12'de görebilsin ama kullanıcı etkilenmesin.
+    console.warn("Favoriler okunamadı, boş liste kullanılıyor:", hata);
+    return [];
+  }
 }
 
 // Favori listesini metne (JSON) çevirip localStorage'a kaydet.
