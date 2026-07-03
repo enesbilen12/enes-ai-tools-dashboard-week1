@@ -10,11 +10,7 @@ gerektirmez. Yazılım eğitimi 1. hafta projesi.
 
 ## 📸 Ekran görüntüsü
 
-<!-- Bir ekran görüntüsü al, proje klasörüne "screenshot.png" olarak kaydet;
-     aşağıdaki satır otomatik olarak görseli gösterecek. -->
 ![AI Araçları Paneli ekran görüntüsü](screenshot.png)
-
-> _Not: `screenshot.png` henüz eklenmedi. Eklenince görsel burada görünür._
 
 ## ✨ Özellikler
 
