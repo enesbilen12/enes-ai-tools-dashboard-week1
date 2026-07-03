@@ -81,6 +81,12 @@ function renderTools(gosterilecekAraclar = tools) {
   const kartKabi = document.querySelector("main");
   kartKabi.innerHTML = ""; // önce temizle (kartlar üst üste binmesin)
 
+  // Liste boşsa (arama/filtre hiçbir şey bulamadıysa) bilgi mesajı göster ve çık.
+  if (gosterilecekAraclar.length === 0) {
+    kartKabi.innerHTML = '<p class="bos-sonuc">Araç bulunamadı.</p>';
+    return;
+  }
+
   // Her araç için bir kart üret ve kaba ekle.
   gosterilecekAraclar.forEach(function (arac) {
     kartKabi.appendChild(kartOlustur(arac));

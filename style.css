@@ -80,6 +80,13 @@ main {
   padding: 16px;
 }
 
+/* Sonuç bulunamadığında gösterilen mesaj: tüm genişliğe yayılır ve ortalanır. */
+.bos-sonuc {
+  grid-column: 1 / -1; /* grid'in tüm sütunlarını kapla */
+  text-align: center;
+  color: #777;
+}
+
 /* Dar ekranlar (telefon) için: boşlukları küçült */
 @media (max-width: 480px) {
   body {
