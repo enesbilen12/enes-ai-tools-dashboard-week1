@@ -2,8 +2,9 @@
 
 Yapay zeka araçlarını (ChatGPT, Claude, Gemini, Midjourney, GitHub Copilot,
 Canva...) tek ekranda listeleyen basit bir web paneli. Kullanıcı araçları
-kart olarak görür, arayabilir, kategoriye göre süzebilir ve beğendiklerini
-favorilere ekleyebilir.
+kart olarak görür, arayabilir, kategoriye göre süzebilir, favorilere ekleyebilir,
+düzenleyebilir/silebilir, silinenleri geri yükleyebilir ve açık/koyu tema
+arasında geçiş yapabilir.
 
 Saf **HTML + CSS + JavaScript** ile yazılmıştır; hiçbir kütüphane/paket
 gerektirmez. Yazılım eğitimi 1. hafta projesi.
@@ -24,8 +25,17 @@ gerektirmez. Yazılım eğitimi 1. hafta projesi.
 - **Kategori filtresi** — Açılır menüden kategoriye göre filtreleme.
 - **Favoriler** — Yıldıza tıklayarak favori ekle/çıkar; favoriler
   `localStorage`'da saklanır, sayfa yenilenince korunur.
+- **Düzenle / Sil** — Her kart, kart içi formla düzenlenebilir veya silinebilir;
+  değişiklikler `localStorage`'da kalıcıdır. Girilen metin güvenli biçimde
+  işlenir (XSS'e karşı kaçış uygulanır).
+- **Silinen araçlar menüsü** — Silinen araçlar sağ üstteki panele taşınır;
+  tıklanınca ana panele geri yüklenir. Bu liste de kalıcıdır.
+- **Açık / koyu tema** — Tek tıkla tema değişir; tercih `localStorage`'da saklanır.
+- **Boş sonuç mesajı** — Arama/filtre bir şey bulamazsa "Araç bulunamadı" gösterilir.
 - **Responsive tasarım** — Grid düzeni; masaüstünde yan yana, telefonda alt alta.
 - **Erişilebilir arama kutusu** — Hover ve focus durumları için görsel geri bildirim.
+- **Dayanıklılık** — Bozuk veya erişilemez `localStorage` durumunda uygulama
+  çökmez, güvenli varsayılanlara döner.
 
 ## 🚀 Nasıl çalıştırılır?
 
@@ -53,9 +63,11 @@ Kurulum gerektirmez. İki yol var:
 | Dosya | Görevi |
 |-------|--------|
 | `index.html` | Sayfanın iskeleti (yapı) |
-| `style.css` | Görünüm (renk, grid, kartlar, hover/focus) |
-| `app.js` | Davranış (veri, kart çizimi, arama, filtre, favoriler) |
+| `style.css` | Görünüm (tema değişkenleri, grid, kartlar, formlar, menüler) |
+| `app.js` | Davranış (veri, kart çizimi, arama, filtre, favoriler, düzenle/sil, silinenler, tema) |
 | `README.md` | Bu tanıtım dosyası |
+| `LICENSE` | MIT lisans metni |
+| `.gitignore` | Git'in yok sayacağı dosyalar (`.DS_Store`) |
 
 ## ✅ Tamamlananlar
 
@@ -65,18 +77,20 @@ Kurulum gerektirmez. İki yol var:
 - [x] İsim + kategori + açıklama araması
 - [x] Kategori filtresi
 - [x] localStorage ile kalıcı favoriler
+- [x] Boş sonuç için "Araç bulunamadı" mesajı
+- [x] Açık / koyu tema (localStorage'da saklanır)
+- [x] Araç düzenleme ve silme (kalıcı, XSS-güvenli)
+- [x] Silinen araçlar menüsü ve geri yükleme
 
 ## 🔭 İleride (fikirler)
 
 - [ ] "Sadece favorileri göster" filtresi
-- [ ] Boş sonuç için "Araç bulunamadı" mesajı
 - [ ] Her kartı aracın web sitesine götüren bağlantı
-- [ ] Açık / koyu tema seçeneği
+- [ ] Panel dışına tıklayınca "Silinen Araçlar" menüsünü kapatma
+- [ ] Basit birim testleri (örn. filtre mantığı)
 
 ## 📄 Lisans
 
 Bu proje **MIT Lisansı** ile açık kaynaktır; herkes özgürce kullanabilir,
-kopyalayabilir ve değiştirebilir.
-
-> ℹ️ Bu bir özet nottur. Tam yasal metin için proje köküne ayrıca bir
-> `LICENSE` dosyası eklemen önerilir (MIT'in standart metni).
+kopyalayabilir ve değiştirebilir. Tam yasal metin için proje kökündeki
+[`LICENSE`](LICENSE) dosyasına bakabilirsin.
