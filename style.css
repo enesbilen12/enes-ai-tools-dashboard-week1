@@ -94,6 +94,63 @@ header p {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
+/* Yeni araç ekleme alanı: buton + açılır form */
+.ekle-alani {
+  max-width: 900px;
+  margin: 0 auto 24px;
+}
+
+.ekle-ac-btn {
+  cursor: pointer;
+  padding: 10px 16px;
+  font-size: 14px;
+  background-color: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.ekle-form {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+/* Gizli durum: form kapalıyken görünmez */
+.ekle-form.gizli {
+  display: none;
+}
+
+.ekle-alan {
+  padding: 10px 12px;
+  font-size: 14px;
+  background-color: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.ekle-aksiyonlar {
+  display: flex;
+  gap: 8px;
+}
+
+.ekle-btn,
+.ekle-iptal-btn {
+  cursor: pointer;
+  padding: 8px 14px;
+  font-size: 14px;
+  background-color: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
 /* Kartların yerleştiği ızgara (grid) alanı.
    Masaüstünde kartlar yan yana, dar ekranda otomatik alt alta gelir. */
 main {

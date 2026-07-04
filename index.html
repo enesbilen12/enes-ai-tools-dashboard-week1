@@ -36,6 +36,22 @@
     <select id="kategori" class="arama-kutusu"></select>
   </section>
 
+  <!-- Yeni araç ekleme: buton formu açar/kapatır, form app.js'e bağlıdır. -->
+  <section class="ekle-alani">
+    <button id="ekle-ac-btn" class="ekle-ac-btn">➕ Yeni Araç Ekle</button>
+    <form id="ekle-form" class="ekle-form gizli">
+      <input id="ekle-name" class="ekle-alan" placeholder="Ad (zorunlu)" />
+      <input id="ekle-category" class="ekle-alan" placeholder="Kategori" />
+      <input id="ekle-purpose" class="ekle-alan" placeholder="Kullanım amacı" />
+      <input id="ekle-owner" class="ekle-alan" placeholder="Geliştiren" />
+      <input id="ekle-note" class="ekle-alan" placeholder="Not" />
+      <div class="ekle-aksiyonlar">
+        <button type="submit" class="ekle-btn">Ekle</button>
+        <button type="button" id="ekle-iptal-btn" class="ekle-iptal-btn">İptal</button>
+      </div>
+    </form>
+  </section>
+
   <!-- Sayfanın ana içeriği: kartları app.js içindeki renderTools() dolduracak.
        DİKKAT: Arama kutusu buraya konmaz; renderTools() <main> içini siler. -->
   <main></main>

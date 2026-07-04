@@ -487,3 +487,56 @@ silinenListesi.addEventListener("click", function (olay) {
 });
 
 renderSilinenler(); // açılışta menüyü doğru sayı/liste ile çiz
+
+// --- YENİ ARAÇ EKLEME FORMU ---
+
+const ekleAcBtn = document.querySelector("#ekle-ac-btn");
+const ekleForm = document.querySelector("#ekle-form");
+const ekleIptalBtn = document.querySelector("#ekle-iptal-btn");
+const ekleName = document.querySelector("#ekle-name");
+const ekleCategory = document.querySelector("#ekle-category");
+const eklePurpose = document.querySelector("#ekle-purpose");
+const ekleOwner = document.querySelector("#ekle-owner");
+const ekleNote = document.querySelector("#ekle-note");
+
+// Aç/kapa: butona basınca form görünür/gizlenir.
+ekleAcBtn.addEventListener("click", function () {
+  ekleForm.classList.toggle("gizli");
+});
+
+// İptal: formu temizle ve gizle.
+ekleIptalBtn.addEventListener("click", function () {
+  ekleForm.reset();
+  ekleForm.classList.add("gizli");
+});
+
+// Form gönderilince (Ekle butonu veya Enter) yeni aracı ekle.
+ekleForm.addEventListener("submit", function (olay) {
+  olay.preventDefault(); // sayfanın yenilenmesini engelle
+
+  const yeniArac = {
+    name: ekleName.value.trim(),
+    category: ekleCategory.value.trim() || "Diğer", // boşsa "Diğer"
+    purpose: eklePurpose.value.trim(),
+    owner: ekleOwner.value.trim(),
+    note: ekleNote.value.trim(),
+  };
+
+  // Ad zorunlu.
+  if (!yeniArac.name) {
+    alert("Ad alanı zorunludur.");
+    return;
+  }
+  // İsim = kimlik: aynı adlı aktif araç olmamalı.
+  if (tools.some((a) => a.name === yeniArac.name)) {
+    alert(`"${yeniArac.name}" adlı bir araç zaten var.`);
+    return;
+  }
+
+  tools.push(yeniArac);
+  araclariKaydet();
+  kategorileriDoldur(); // yeni kategori menüye yansısın
+  ekleForm.reset();
+  ekleForm.classList.add("gizli");
+  applyFilters(); // listeyi yeniden çiz
+});
