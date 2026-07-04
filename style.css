@@ -221,6 +221,18 @@ main {
   color: #c0392b;
 }
 
+/* "Siteye Git" bağlantısı: bir <a> ama diğer butonlarla aynı görünüm */
+.site-btn {
+  text-decoration: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 13px;
+  background-color: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
 /* Kart içi düzenleme formu */
 .duzenle-form {
   display: flex;

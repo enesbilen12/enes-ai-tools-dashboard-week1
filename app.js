@@ -9,6 +9,7 @@ const VARSAYILAN_ARACLAR = [
     purpose: "Soru yanıtlama ve metin üretme için sohbet tabanlı yapay zeka.",
     owner: "OpenAI",
     note: "Genel amaçlı, başlangıç için popüler.",
+    url: "https://chat.openai.com",
   },
   {
     name: "Claude",
@@ -16,6 +17,7 @@ const VARSAYILAN_ARACLAR = [
     purpose: "Uzun metinlerde ve kod yazımında güçlü sohbet asistanı.",
     owner: "Anthropic",
     note: "Uzun belgelerle çalışmada iyi.",
+    url: "https://claude.ai",
   },
   {
     name: "Gemini",
@@ -23,6 +25,7 @@ const VARSAYILAN_ARACLAR = [
     purpose: "Google servisleriyle bütünleşik sohbet ve arama asistanı.",
     owner: "Google",
     note: "Google araçlarını kullananlar için pratik.",
+    url: "https://gemini.google.com",
   },
   {
     name: "Midjourney",
@@ -30,6 +33,7 @@ const VARSAYILAN_ARACLAR = [
     purpose: "Yazdığın açıklamadan sanatsal görseller üreten araç.",
     owner: "Midjourney",
     note: "Görsel kalitesi yüksek.",
+    url: "https://www.midjourney.com",
   },
   {
     name: "GitHub Copilot",
@@ -37,6 +41,7 @@ const VARSAYILAN_ARACLAR = [
     purpose: "Kod yazarken satır ve fonksiyon önerileri sunan asistan.",
     owner: "GitHub",
     note: "Editör içinde çalışır.",
+    url: "https://github.com/features/copilot",
   },
   {
     name: "Canva",
@@ -44,6 +49,7 @@ const VARSAYILAN_ARACLAR = [
     purpose: "Sürükle-bırak ile afiş, sunum ve sosyal medya tasarımı.",
     owner: "Canva",
     note: "Tasarım bilgisi gerektirmez.",
+    url: "https://www.canva.com",
   },
 ];
 
@@ -58,7 +64,15 @@ function araclariYukle() {
     const kayit = localStorage.getItem(ARAC_ANAHTARI);
     if (!kayit) return VARSAYILAN_ARACLAR.map((a) => ({ ...a }));
     const liste = JSON.parse(kayit);
-    return Array.isArray(liste) ? liste : VARSAYILAN_ARACLAR.map((a) => ({ ...a }));
+    if (!Array.isArray(liste)) return VARSAYILAN_ARACLAR.map((a) => ({ ...a }));
+
+    // Geriye dönük uyum: daha önce url'siz kaydedilmiş araçlara, adı eşleşen
+    // varsayılandan url'yi ekle (kullanıcının kendi verisi korunur).
+    return liste.map((arac) => {
+      if (arac.url) return arac;
+      const varsayilan = VARSAYILAN_ARACLAR.find((v) => v.name === arac.name);
+      return varsayilan ? { ...arac, url: varsayilan.url } : arac;
+    });
   } catch (hata) {
     console.warn("Araçlar okunamadı, varsayılan liste kullanılıyor:", hata);
     return VARSAYILAN_ARACLAR.map((a) => ({ ...a }));
@@ -158,6 +172,13 @@ function kartOlustur(arac) {
   const aktifSinif = favori ? " aktif" : "";
   const ad = guvenliMetin(arac.name);
 
+  // url varsa "Siteye Git" bağlantısı üret; yoksa boş (kullanıcı eklediği araçta olmayabilir).
+  // <a target="_blank"> yeni sekmede açar; rel="noopener noreferrer" güvenlik içindir.
+  const siteBaglantisi = arac.url
+    ? `<a class="site-btn" href="${guvenliMetin(arac.url)}"
+          target="_blank" rel="noopener noreferrer">🔗 Siteye Git</a>`
+    : "";
+
   kart.innerHTML = `
     <button class="favori-btn${aktifSinif}" data-isim="${ad}"
             title="Favori" aria-label="Favorilere ekle veya çıkar">${yildiz}</button>
@@ -167,6 +188,7 @@ function kartOlustur(arac) {
     <p><strong>Geliştiren:</strong> ${guvenliMetin(arac.owner)}</p>
     <p><em>${guvenliMetin(arac.note)}</em></p>
     <div class="kart-aksiyonlar">
+      ${siteBaglantisi}
       <button class="duzenle-btn" data-isim="${ad}">✏️ Düzenle</button>
       <button class="sil-btn" data-isim="${ad}">🗑 Sil</button>
     </div>
