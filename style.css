@@ -114,11 +114,121 @@ main {
   padding: 16px;
 }
 
+/* Kart alt aksiyonları: Düzenle / Sil butonları */
+.kart-aksiyonlar {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.kart-aksiyonlar button,
+.duzenle-aksiyonlar button {
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 13px;
+  background-color: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+/* Sil butonu tehlikeli işlem olduğu için kırmızımsı yazı */
+.sil-btn {
+  color: #c0392b;
+}
+
+/* Kart içi düzenleme formu */
+.duzenle-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.duzenle-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.duzenle-alan {
+  padding: 6px 8px;
+  font-size: 14px;
+  background-color: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.duzenle-aksiyonlar {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
 /* Sonuç bulunamadığında gösterilen mesaj: tüm genişliğe yayılır ve ortalanır. */
 .bos-sonuc {
   grid-column: 1 / -1; /* grid'in tüm sütunlarını kapla */
   text-align: center;
   color: var(--footer);
+}
+
+/* Sağ üst köşe: silinen araçlar menüsü */
+.silinen-alani {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  text-align: right;
+}
+
+.silinen-btn {
+  cursor: pointer;
+  padding: 8px 12px;
+  font-size: 13px;
+  background-color: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+/* Açılır liste paneli */
+.silinen-liste {
+  margin-top: 6px;
+  min-width: 180px;
+  max-height: 260px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+/* Gizli durum: panel kapalıyken görünmez */
+.silinen-liste.gizli {
+  display: none;
+}
+
+/* Silinen araç öğesi (tıklanınca geri yüklenir) */
+.silinen-oge {
+  cursor: pointer;
+  text-align: left;
+  padding: 6px 8px;
+  font-size: 13px;
+  background-color: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.silinen-bos {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
 }
 
 /* Dar ekranlar (telefon) için: boşlukları küçült */

@@ -1,9 +1,8 @@
-// app.js: Sayfanın davranışı (veri, çizim, arama...).
+// app.js: Sayfanın davranışı (veri, çizim, arama, favoriler, düzenle/sil, tema).
 
-// tools: Panelde gösterilecek araçların listesi (bir array).
-// Array = köşeli parantez [ ] ile yazılan sıralı liste.
-// İçindeki her araç bir object { } -> "isim: değer" çiftleriyle bilgi tutar.
-const tools = [
+// VARSAYILAN_ARACLAR: ilk açılışta kullanılacak hazır liste.
+// Kullanıcı silme/düzenleme yaparsa çalışan liste localStorage'da tutulur.
+const VARSAYILAN_ARACLAR = [
   {
     name: "ChatGPT",
     category: "Metin",
@@ -48,35 +47,134 @@ const tools = [
   },
 ];
 
-// kartOlustur: TEK bir araç için hazır bir kart (<section>) elementi üretir.
-// (renderTools'tan ayrıldı: "bir kartı nasıl kurarım" ayrı bir sorumluluk.)
+// --- ARAÇ VERİSİNİN KALICILIĞI (localStorage) ---
+
+// Projeye özel önek: aynı origin'deki diğer anahtarlarla çakışmayı önler.
+const ARAC_ANAHTARI = "ai-araclari-paneli:araclar";
+
+// Kayıtlı listeyi oku; yoksa/bozuksa varsayılan listenin KOPYASINI ver.
+function araclariYukle() {
+  try {
+    const kayit = localStorage.getItem(ARAC_ANAHTARI);
+    if (!kayit) return VARSAYILAN_ARACLAR.map((a) => ({ ...a }));
+    const liste = JSON.parse(kayit);
+    return Array.isArray(liste) ? liste : VARSAYILAN_ARACLAR.map((a) => ({ ...a }));
+  } catch (hata) {
+    console.warn("Araçlar okunamadı, varsayılan liste kullanılıyor:", hata);
+    return VARSAYILAN_ARACLAR.map((a) => ({ ...a }));
+  }
+}
+
+// Çalışan araç listesini localStorage'a kaydet.
+function araclariKaydet() {
+  try {
+    localStorage.setItem(ARAC_ANAHTARI, JSON.stringify(tools));
+  } catch (hata) {
+    console.warn("Araçlar kaydedilemedi:", hata);
+  }
+}
+
+// --- SİLİNEN ARAÇLAR (çöp kutusu) kalıcılığı ---
+const SILINEN_ANAHTARI = "ai-araclari-paneli:silinenler";
+
+// Silinen araç NESNELERİNİN listesini oku (bozuk/kapalıysa boş liste).
+function silinenleriYukle() {
+  try {
+    const kayit = localStorage.getItem(SILINEN_ANAHTARI);
+    if (!kayit) return [];
+    const liste = JSON.parse(kayit);
+    return Array.isArray(liste) ? liste : [];
+  } catch (hata) {
+    console.warn("Silinenler okunamadı, boş liste kullanılıyor:", hata);
+    return [];
+  }
+}
+
+// Silinenler listesini localStorage'a kaydet.
+function silinenleriKaydet() {
+  try {
+    localStorage.setItem(SILINEN_ANAHTARI, JSON.stringify(silinenAraclar));
+  } catch (hata) {
+    console.warn("Silinenler kaydedilemedi:", hata);
+  }
+}
+
+// tools: aktif liste. silinenAraclar: çöp kutusu. duzenlenenArac: düzenlenen ad.
+let tools = araclariYukle();
+let silinenAraclar = silinenleriYukle();
+let duzenlenenArac = null;
+
+// guvenliMetin: HTML özel karakterlerini kaçırır. Kullanıcı artık araç
+// bilgilerini düzenleyebildiği için bu, XSS ve bozuk nitelik riskini kapatır.
+function guvenliMetin(deger) {
+  return String(deger)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+// duzenlemeFormuHTML: bir aracı düzenlemek için kart içi form üretir.
+function duzenlemeFormuHTML(arac) {
+  const ad = guvenliMetin(arac.name);
+  return `
+    <div class="duzenle-form">
+      <label>İsim
+        <input class="duzenle-alan" data-alan="name" value="${guvenliMetin(arac.name)}" />
+      </label>
+      <label>Kategori
+        <input class="duzenle-alan" data-alan="category" value="${guvenliMetin(arac.category)}" />
+      </label>
+      <label>Açıklama
+        <input class="duzenle-alan" data-alan="purpose" value="${guvenliMetin(arac.purpose)}" />
+      </label>
+      <label>Geliştiren
+        <input class="duzenle-alan" data-alan="owner" value="${guvenliMetin(arac.owner)}" />
+      </label>
+      <label>Not
+        <input class="duzenle-alan" data-alan="note" value="${guvenliMetin(arac.note)}" />
+      </label>
+      <div class="duzenle-aksiyonlar">
+        <button class="kaydet-btn" data-isim="${ad}">💾 Kaydet</button>
+        <button class="iptal-btn">İptal</button>
+      </div>
+    </div>
+  `;
+}
+
+// kartOlustur: bir araç için kart üretir. Düzenleniyorsa form, değilse görünüm.
 function kartOlustur(arac) {
   const kart = document.createElement("section");
-  kart.className = "kart"; // CSS'teki .kart stilini uygula.
+  kart.className = "kart";
 
-  // Bu araç favori mi? Dolu (★) / boş (☆) yıldız ve ekstra class buna göre.
+  // Bu araç düzenleniyorsa, bilgiler yerine düzenleme formunu göster.
+  if (arac.name === duzenlenenArac) {
+    kart.innerHTML = duzenlemeFormuHTML(arac);
+    return kart;
+  }
+
   const favori = favoriMi(arac.name);
   const yildiz = favori ? "★" : "☆";
   const aktifSinif = favori ? " aktif" : "";
+  const ad = guvenliMetin(arac.name);
 
-  // Kartın içi: en üstte favori butonu, ardından araç bilgileri.
   kart.innerHTML = `
-    <button class="favori-btn${aktifSinif}" data-isim="${arac.name}"
-            title="Favori" aria-label="Favorilere ekle veya çıkar">
-      ${yildiz}
-    </button>
-    <h2>${arac.name}</h2>
-    <p><strong>Kategori:</strong> ${arac.category}</p>
-    <p>${arac.purpose}</p>
-    <p><strong>Geliştiren:</strong> ${arac.owner}</p>
-    <p><em>${arac.note}</em></p>
+    <button class="favori-btn${aktifSinif}" data-isim="${ad}"
+            title="Favori" aria-label="Favorilere ekle veya çıkar">${yildiz}</button>
+    <h2>${ad}</h2>
+    <p><strong>Kategori:</strong> ${guvenliMetin(arac.category)}</p>
+    <p>${guvenliMetin(arac.purpose)}</p>
+    <p><strong>Geliştiren:</strong> ${guvenliMetin(arac.owner)}</p>
+    <p><em>${guvenliMetin(arac.note)}</em></p>
+    <div class="kart-aksiyonlar">
+      <button class="duzenle-btn" data-isim="${ad}">✏️ Düzenle</button>
+      <button class="sil-btn" data-isim="${ad}">🗑 Sil</button>
+    </div>
   `;
-
-  return kart; // hazır kartı geri ver
+  return kart;
 }
 
 // renderTools: verilen araç listesini <main> içine kart olarak basar.
-// Parametre boş bırakılırsa tüm "tools" çizilir.
 function renderTools(gosterilecekAraclar = tools) {
   const kartKabi = document.querySelector("main");
   kartKabi.innerHTML = ""; // önce temizle (kartlar üst üste binmesin)
@@ -87,7 +185,6 @@ function renderTools(gosterilecekAraclar = tools) {
     return;
   }
 
-  // Her araç için bir kart üret ve kaba ekle.
   gosterilecekAraclar.forEach(function (arac) {
     kartKabi.appendChild(kartOlustur(arac));
   });
@@ -95,35 +192,25 @@ function renderTools(gosterilecekAraclar = tools) {
 
 // --- FAVORİLER (localStorage) ---
 
-// localStorage'da favorilerin saklandığı anahtarın adı.
 const FAVORI_ANAHTARI = "favoriler";
 
-// localStorage'dan favori isim listesini oku (kayıt yoksa boş dizi döndür).
-// try/catch: localStorage kapalıysa veya kayıt bozuksa uygulama çökmesin,
-// güvenli biçimde boş listeye dönsün.
+// Favori isim listesini oku; localStorage kapalı/bozuksa boş listeye dön.
 function favorileriYukle() {
   try {
     const kayit = localStorage.getItem(FAVORI_ANAHTARI);
-    if (!kayit) return []; // hiç kayıt yoksa boş liste
-
-    // localStorage sadece METİN saklar; JSON.parse ile diziye geri çeviriyoruz.
+    if (!kayit) return [];
     const liste = JSON.parse(kayit);
-
-    // Beklenen şey bir dizi; değilse (bozuk/yanlış veri) boş listeye dön.
     return Array.isArray(liste) ? liste : [];
   } catch (hata) {
-    // Sessizce yutmayalım: geliştirici F12'de görebilsin ama kullanıcı etkilenmesin.
     console.warn("Favoriler okunamadı, boş liste kullanılıyor:", hata);
     return [];
   }
 }
 
-// Favori listesini metne (JSON) çevirip localStorage'a kaydet.
 function favorileriKaydet(liste) {
   localStorage.setItem(FAVORI_ANAHTARI, JSON.stringify(liste));
 }
 
-// Verilen araç adı favori listesinde var mı? (true / false)
 function favoriMi(isim) {
   return favorileriYukle().includes(isim);
 }
@@ -132,53 +219,178 @@ function favoriMi(isim) {
 function favoriDegistir(isim) {
   let favoriler = favorileriYukle();
   if (favoriler.includes(isim)) {
-    favoriler = favoriler.filter((ad) => ad !== isim); // çıkar
+    favoriler = favoriler.filter((ad) => ad !== isim);
   } else {
-    favoriler.push(isim); // ekle
+    favoriler.push(isim);
   }
   favorileriKaydet(favoriler);
 }
 
-// Yıldız tıklamasını TEK dinleyiciyle yakala (olay delegasyonu).
-// Kartlar her çizimde yeniden oluştuğu için her yıldıza ayrı dinleyici bağlamak
-// yerine üst kap <main>'i dinliyoruz; tıklanan yıldızı data-isim'den buluruz.
+// favoriYenidenAdlandir: araç yeniden adlandırılınca favori kaydını da güncelle.
+// (İsim = kimlik olduğu için, eski ad favorideyse yeni ada taşınmalı.)
+function favoriYenidenAdlandir(eskiAd, yeniAd) {
+  const favoriler = favorileriYukle();
+  if (!favoriler.includes(eskiAd)) return;
+  const guncel = favoriler.filter((ad) => ad !== eskiAd);
+  if (!guncel.includes(yeniAd)) guncel.push(yeniAd);
+  favorileriKaydet(guncel);
+}
+
+// --- SİL / DÜZENLE ---
+
+// aracSil: onay al, aracı ÇÖP KUTUSUNA taşı, favoriden temizle, kaydet, çiz.
+function aracSil(isim) {
+  if (!confirm(`"${isim}" aracını silmek istediğine emin misin?`)) return;
+  const arac = tools.find((a) => a.name === isim);
+  if (!arac) return;
+
+  tools = tools.filter((a) => a.name !== isim); // aktif listeden çıkar
+  silinenAraclar.push(arac); // çöp kutusuna ekle (tüm alanlarıyla)
+  if (favoriMi(isim)) favoriDegistir(isim); // hayalet favoriyi önle
+
+  araclariKaydet();
+  silinenleriKaydet();
+  kategorileriDoldur();
+  renderSilinenler(); // çöp menüsünü güncelle
+  applyFilters();
+}
+
+// aracGeriYukle: çöp kutusundaki bir aracı ana panele geri getir.
+function aracGeriYukle(isim) {
+  const arac = silinenAraclar.find((a) => a.name === isim);
+  if (!arac) return;
+
+  // İsim = kimlik. Aynı adlı aktif araç varsa çakışmayı önle.
+  if (tools.some((a) => a.name === isim)) {
+    alert(`"${isim}" adlı bir araç zaten listede. Geri yüklenemedi.`);
+    return;
+  }
+
+  silinenAraclar = silinenAraclar.filter((a) => a.name !== isim); // çöpten çıkar
+  tools.push(arac); // aktif listeye geri ekle
+
+  araclariKaydet();
+  silinenleriKaydet();
+  kategorileriDoldur();
+  renderSilinenler();
+  applyFilters();
+}
+
+// duzenlemeyeBasla: ilgili kartı form moduna al.
+function duzenlemeyeBasla(isim) {
+  duzenlenenArac = isim;
+  applyFilters();
+}
+
+// duzenlemeyiIptalEt: form modundan çık, değişiklikleri kaydetmeden.
+function duzenlemeyiIptalEt() {
+  duzenlenenArac = null;
+  applyFilters();
+}
+
+// duzenlemeyiKaydet: formdaki değerleri oku, aracı güncelle, kaydet, çiz.
+function duzenlemeyiKaydet(eskiIsim, kartEl) {
+  const arac = tools.find((a) => a.name === eskiIsim);
+  if (!arac) {
+    duzenlenenArac = null;
+    applyFilters();
+    return;
+  }
+
+  // Formdaki tüm alanları data-alan adına göre topla.
+  const alanlar = {};
+  kartEl.querySelectorAll(".duzenle-alan").forEach(function (girdi) {
+    alanlar[girdi.dataset.alan] = girdi.value.trim();
+  });
+
+  if (!alanlar.name) {
+    alert("İsim boş olamaz.");
+    return; // form modunda kal
+  }
+
+  // İsim değiştiyse favori kaydını da taşı (çakışmayı önle).
+  if (eskiIsim !== alanlar.name) {
+    favoriYenidenAdlandir(eskiIsim, alanlar.name);
+  }
+
+  arac.name = alanlar.name;
+  arac.category = alanlar.category;
+  arac.purpose = alanlar.purpose;
+  arac.owner = alanlar.owner;
+  arac.note = alanlar.note;
+
+  duzenlenenArac = null;
+  araclariKaydet();
+  kategorileriDoldur(); // kategori değişmiş olabilir
+  applyFilters();
+}
+
+// --- KART TIKLAMALARI (olay delegasyonu) ---
+// Tek dinleyici; tıklanan butonu sınıfından ayırt eder.
 document.querySelector("main").addEventListener("click", function (olay) {
-  const favoriButonu = olay.target.closest(".favori-btn");
-  if (!favoriButonu) return; // tıklanan şey yıldız değilse görmezden gel
-  favoriDegistir(favoriButonu.dataset.isim); // durumu değiştir + kaydet
-  applyFilters(); // listeyi yeniden çiz ki yıldız dolu/boş güncellensin
+  const hedef = olay.target;
+  const kart = hedef.closest(".kart");
+
+  const favoriButonu = hedef.closest(".favori-btn");
+  if (favoriButonu) {
+    favoriDegistir(favoriButonu.dataset.isim);
+    applyFilters();
+    return;
+  }
+
+  const duzenleButonu = hedef.closest(".duzenle-btn");
+  if (duzenleButonu) {
+    duzenlemeyeBasla(duzenleButonu.dataset.isim);
+    return;
+  }
+
+  const silButonu = hedef.closest(".sil-btn");
+  if (silButonu) {
+    aracSil(silButonu.dataset.isim);
+    return;
+  }
+
+  const kaydetButonu = hedef.closest(".kaydet-btn");
+  if (kaydetButonu) {
+    duzenlemeyiKaydet(kaydetButonu.dataset.isim, kart);
+    return;
+  }
+
+  const iptalButonu = hedef.closest(".iptal-btn");
+  if (iptalButonu) {
+    duzenlemeyiIptalEt();
+    return;
+  }
 });
 
-// Sayfa açılınca kartları çiz (favori durumları da otomatik yansır).
+// Sayfa açılınca kartları çiz.
 renderTools();
 
 // --- ARAMA / FİLTRELEME ---
 
-// 1) Arama kutusunu DOM'dan bul (index.html'deki id="arama").
 const aramaKutusu = document.querySelector("#arama");
-
-
-// 2) Kategori kutusunu da DOM'dan bul (index.html'deki id="kategori").
 const kategoriKutusu = document.querySelector("#kategori");
 
-// 3) Kategori seçeneklerini veriden üret (elle yazıp tekrar etmeyelim).
+// Kategori seçeneklerini veriden üret; mevcut seçimi mümkünse koru.
 function kategorileriDoldur() {
-  // Set, tekrar eden kategorileri otomatik eler -> benzersiz liste.
+  const oncekiSecim = kategoriKutusu.value; // seçili kategoriyi hatırla
   const kategoriler = [...new Set(tools.map((tool) => tool.category))];
 
-  // İlk seçenek "Tümü" (value="all"), ardından her kategori bir <option>.
   let secenekler = '<option value="all">Tüm kategoriler</option>';
   kategoriler.forEach(function (kategori) {
-    secenekler += `<option value="${kategori}">${kategori}</option>`;
+    secenekler += `<option value="${guvenliMetin(kategori)}">${guvenliMetin(
+      kategori
+    )}</option>`;
   });
   kategoriKutusu.innerHTML = secenekler;
+
+  // Önceki seçim hâlâ mevcutsa geri yükle (silme/düzenleme sonrası kaymasın).
+  const halaVar = [...kategoriKutusu.options].some((o) => o.value === oncekiSecim);
+  if (halaVar) kategoriKutusu.value = oncekiSecim;
 }
 
-// aracFiltreyeUyuyor: bir araç, hem arama metnine HEM seçili kategoriye uyuyor mu?
-// (applyFilters'tan ayrıldı: "eşleşme kuralı" kendini anlatan ayrı bir parça.)
+// aracFiltreyeUyuyor: araç hem arama metnine HEM seçili kategoriye uyuyor mu?
 function aracFiltreyeUyuyor(arac, aramaMetni, secilenKategori) {
-  // İsim + kategori + açıklamayı tek metinde arıyoruz.
-  // Böylece "tasarım" yazınca Canva'yı kategorisinden de bulabiliriz.
   const aranabilirMetin = (
     arac.name + " " + arac.category + " " + arac.purpose
   ).toLowerCase();
@@ -186,13 +398,13 @@ function aracFiltreyeUyuyor(arac, aramaMetni, secilenKategori) {
   const metinUyuyor = aranabilirMetin.includes(aramaMetni);
   const kategoriUyuyor =
     secilenKategori === "all" || arac.category === secilenKategori;
-  return metinUyuyor && kategoriUyuyor; // ikisi de doğru olmalı (&&)
+  return metinUyuyor && kategoriUyuyor;
 }
 
 // applyFilters: kullanıcının girdilerini okur, listeyi süzer ve çizer.
 function applyFilters() {
   const aramaMetni = aramaKutusu.value.toLowerCase();
-  const secilenKategori = kategoriKutusu.value; // "all" ya da bir kategori adı
+  const secilenKategori = kategoriKutusu.value;
 
   const filtrelenmisAraclar = tools.filter(function (arac) {
     return aracFiltreyeUyuyor(arac, aramaMetni, secilenKategori);
@@ -201,25 +413,20 @@ function applyFilters() {
   renderTools(filtrelenmisAraclar);
 }
 
-// 5) Kategorileri doldur, sonra iki olayı da aynı fonksiyona bağla.
 kategorileriDoldur();
-aramaKutusu.addEventListener("input", applyFilters); // her harf değişiminde
-kategoriKutusu.addEventListener("change", applyFilters); // seçim değişince
+aramaKutusu.addEventListener("input", applyFilters);
+kategoriKutusu.addEventListener("change", applyFilters);
 
 // --- TEMA (açık / koyu) ---
 
-// localStorage anahtarı: projeye özel önek (aynı origin'de çakışmayı önler).
 const TEMA_ANAHTARI = "ai-araclari-paneli:tema";
 const temaButonu = document.querySelector("#tema-btn");
 
-// Verilen temayı uygula: <html> etiketine data-theme yaz, butonu güncelle.
 function temayiUygula(tema) {
   document.documentElement.setAttribute("data-theme", tema);
-  // Buton, TIKLANINCA GEÇİLECEK temayı gösterir (mevcut temanın tersi).
   temaButonu.textContent = tema === "dark" ? "☀️ Açık tema" : "🌙 Koyu tema";
 }
 
-// Temayı tersine çevir ve localStorage'a kaydet.
 function temayiDegistir() {
   const suanki = document.documentElement.getAttribute("data-theme");
   const yeni = suanki === "dark" ? "light" : "dark";
@@ -231,7 +438,6 @@ function temayiDegistir() {
   }
 }
 
-// Sayfa açılışında kayıtlı temayı oku ve uygula (yoksa açık tema).
 function kayitliTemayiYukle() {
   let tema = "light";
   try {
@@ -242,5 +448,42 @@ function kayitliTemayiYukle() {
   temayiUygula(tema);
 }
 
-kayitliTemayiYukle(); // açılışta doğru temayı uygula
-temaButonu.addEventListener("click", temayiDegistir); // tıklamada değiştir
+kayitliTemayiYukle();
+temaButonu.addEventListener("click", temayiDegistir);
+
+// --- SİLİNEN ARAÇLAR MENÜSÜ (sağ üst) ---
+
+const silinenButonu = document.querySelector("#silinen-btn");
+const silinenListesi = document.querySelector("#silinen-liste");
+
+// Butonun sayacını ve açılır listenin içeriğini güncelle.
+function renderSilinenler() {
+  silinenButonu.textContent = `🗑 Silinen Araçlar (${silinenAraclar.length})`;
+
+  if (silinenAraclar.length === 0) {
+    silinenListesi.innerHTML = '<p class="silinen-bos">Silinen araç yok.</p>';
+    return;
+  }
+
+  // Her silinen araç için, tıklanınca geri yüklenecek bir buton.
+  let html = "";
+  silinenAraclar.forEach(function (arac) {
+    const ad = guvenliMetin(arac.name);
+    html += `<button class="silinen-oge" data-isim="${ad}">↩︎ ${ad}</button>`;
+  });
+  silinenListesi.innerHTML = html;
+}
+
+// Butona tıklayınca listeyi aç/kapa.
+silinenButonu.addEventListener("click", function () {
+  silinenListesi.classList.toggle("gizli");
+});
+
+// Listedeki bir araca tıklayınca geri yükle (olay delegasyonu).
+silinenListesi.addEventListener("click", function (olay) {
+  const oge = olay.target.closest(".silinen-oge");
+  if (!oge) return;
+  aracGeriYukle(oge.dataset.isim);
+});
+
+renderSilinenler(); // açılışta menüyü doğru sayı/liste ile çiz
