@@ -176,6 +176,8 @@ function kartOlustur(arac) {
 
 // renderTools: verilen araç listesini <main> içine kart olarak basar.
 function renderTools(gosterilecekAraclar = tools) {
+  renderOzet(); // özet kutularını her çizimde güncel tut
+
   const kartKabi = document.querySelector("main");
   kartKabi.innerHTML = ""; // önce temizle (kartlar üst üste binmesin)
 
@@ -188,6 +190,16 @@ function renderTools(gosterilecekAraclar = tools) {
   gosterilecekAraclar.forEach(function (arac) {
     kartKabi.appendChild(kartOlustur(arac));
   });
+}
+
+// renderOzet: üstteki özet kutularını günceller.
+// Toplam = aktif araç sayısı (silinenler ayrı listede olduğu için hariç).
+// Favori = aktif araçlar içinde yıldızlı olanların sayısı.
+function renderOzet() {
+  const toplam = tools.length;
+  const favoriSayisi = tools.filter((arac) => favoriMi(arac.name)).length;
+  document.querySelector("#ozet-toplam").textContent = toplam;
+  document.querySelector("#ozet-favori").textContent = favoriSayisi;
 }
 
 // --- FAVORİLER (localStorage) ---

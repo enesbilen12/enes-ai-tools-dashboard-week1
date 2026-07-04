@@ -64,6 +64,33 @@ header p {
   border-radius: 8px;
 }
 
+/* Özet kutuları: toplam ve favori araç sayısı */
+.ozet-alani {
+  max-width: 900px;
+  margin: 0 auto 16px;
+  display: flex;
+  gap: 12px;
+}
+
+.ozet-kutu {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  color: var(--muted);
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+/* Kutu içindeki sayı: büyük ve belirgin */
+.ozet-kutu strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 22px;
+  color: var(--text);
+}
+
 /* Arama kutusu alanı: sayfada ortalanmış, kartlarla aynı genişlikte. */
 .arama-alani {
   max-width: 900px;
