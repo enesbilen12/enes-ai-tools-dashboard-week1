@@ -205,3 +205,42 @@ function applyFilters() {
 kategorileriDoldur();
 aramaKutusu.addEventListener("input", applyFilters); // her harf değişiminde
 kategoriKutusu.addEventListener("change", applyFilters); // seçim değişince
+
+// --- TEMA (açık / koyu) ---
+
+// localStorage anahtarı: projeye özel önek (aynı origin'de çakışmayı önler).
+const TEMA_ANAHTARI = "ai-araclari-paneli:tema";
+const temaButonu = document.querySelector("#tema-btn");
+
+// Verilen temayı uygula: <html> etiketine data-theme yaz, butonu güncelle.
+function temayiUygula(tema) {
+  document.documentElement.setAttribute("data-theme", tema);
+  // Buton, TIKLANINCA GEÇİLECEK temayı gösterir (mevcut temanın tersi).
+  temaButonu.textContent = tema === "dark" ? "☀️ Açık tema" : "🌙 Koyu tema";
+}
+
+// Temayı tersine çevir ve localStorage'a kaydet.
+function temayiDegistir() {
+  const suanki = document.documentElement.getAttribute("data-theme");
+  const yeni = suanki === "dark" ? "light" : "dark";
+  temayiUygula(yeni);
+  try {
+    localStorage.setItem(TEMA_ANAHTARI, yeni);
+  } catch (hata) {
+    console.warn("Tema kaydedilemedi:", hata);
+  }
+}
+
+// Sayfa açılışında kayıtlı temayı oku ve uygula (yoksa açık tema).
+function kayitliTemayiYukle() {
+  let tema = "light";
+  try {
+    tema = localStorage.getItem(TEMA_ANAHTARI) || "light";
+  } catch (hata) {
+    console.warn("Tema okunamadı:", hata);
+  }
+  temayiUygula(tema);
+}
+
+kayitliTemayiYukle(); // açılışta doğru temayı uygula
+temaButonu.addEventListener("click", temayiDegistir); // tıklamada değiştir
