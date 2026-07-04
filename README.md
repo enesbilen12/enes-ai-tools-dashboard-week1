@@ -8,6 +8,10 @@ favorilere ekleyebilir.
 Saf **HTML + CSS + JavaScript** ile yazılmıştır; hiçbir kütüphane/paket
 gerektirmez. Yazılım eğitimi 1. hafta projesi.
 
+## 🔗 Canlı demo
+
+**[https://enesbilen12.github.io/enes-ai-tools-dashboard-week1](https://enesbilen12.github.io/enes-ai-tools-dashboard-week1)**
+
 ## 📸 Ekran görüntüsü
 
 ![AI Araçları Paneli ekran görüntüsü](screenshot.png)
