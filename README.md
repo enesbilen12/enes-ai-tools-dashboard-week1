@@ -89,6 +89,55 @@ Kurulum gerektirmez. İki yol var:
 - [ ] Panel dışına tıklayınca "Silinen Araçlar" menüsünü kapatma
 - [ ] Basit birim testleri (örn. filtre mantığı)
 
+## 🎓 Bu hafta öğrendiklerim
+
+Bu projeyi geliştirirken pratikte öğrendiğim konular:
+
+### HTML
+- **Semantik etiketler** — `<header>`, `<main>`, `<section>`, `<footer>` ile
+  anlamlı sayfa yapısı (erişilebilirlik ve SEO için `<div>` yığınından daha iyi).
+- **CSS ve JS bağlama** — `<link>` ile stil, sayfa sonunda `<script>` ile davranış.
+- **`<div>` vs semantik etiket** — `<div>` yalnızca anlamsal karşılığı olmayan
+  gruplamalar için; mümkün olduğunda semantik etiket tercih edilir.
+
+### CSS
+- **Grid düzeni** — `grid-template-columns: repeat(auto-fit, minmax(...))` ile
+  otomatik kart dizilimi.
+- **Responsive tasarım & media query** — `@media (max-width: ...)` ile dar
+  ekranda düzeni uyarlama.
+- **Hover / focus** — kullanıcı etkileşimine görsel geri bildirim (`:hover`, `:focus`).
+- **Karanlık / açık tema** — CSS değişkenleri (`:root`, `var(--...)`) ve
+  `[data-theme="dark"]` ile tek noktadan tema yönetimi.
+
+### JavaScript
+- **Array & object** — veriyi nesnelerden oluşan bir dizide tutma.
+- **DOM** — `querySelector`, `createElement`, `innerHTML`, `appendChild` ile
+  sayfayı JavaScript'ten değiştirme.
+- **`renderTools` / `kartOlustur` fonksiyonları** — veriyi ekrana çizme;
+  sorumlulukları küçük fonksiyonlara ayırma.
+- **Event listener & olay delegasyonu** — `addEventListener`; tek dinleyiciyle
+  çok sayıda butonu yönetme.
+- **localStorage** — favorileri, temayı, araç ve silinen listelerini kalıcı
+  saklama (`getItem` / `setItem`, `JSON.parse` / `JSON.stringify`).
+- **try/catch** — bozuk veya erişilemez `localStorage` durumunda çökmeyi önleme.
+- **Form validasyonu** — `submit` olayında zorunlu alan kontrolü ve `preventDefault`.
+
+### Git & GitHub
+- **add / commit / push döngüsü** — değişiklikleri sahneleme, kaydetme, yayınlama.
+- **Anlamlı commit mesajları** — `feat` / `fix` / `docs` / `style` / `chore` /
+  `refactor` ön ekleri; mesajın içeriği dürüstçe yansıtması.
+- **GitHub Pages** — projeyi ücretsiz canlı bir adreste yayınlama.
+- **Branch (dal)** — `main` dalı ve dalların ne işe yaradığı.
+
+### Genel
+- **Claude Code ile çalışma** — bir yapay zeka asistanıyla adım adım geliştirme.
+- **Prompt engineering** — istediğimi net, sınırlı ve adım adım anlatmanın
+  daha iyi sonuç verdiğini görme.
+- **AI ile kod incelemesi** — mentor gözüyle hata, okunabilirlik ve güvenlik
+  geri bildirimi alma.
+- **DevTools** — `F12` ile Console (hata/`console.log`) ve Application
+  (localStorage) sekmelerini kullanma.
+
 ## 📄 Lisans
 
 Bu proje **MIT Lisansı** ile açık kaynaktır; herkes özgürce kullanabilir,
