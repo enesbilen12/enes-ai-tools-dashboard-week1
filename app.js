@@ -148,6 +148,9 @@ function duzenlemeFormuHTML(arac) {
       <label>Not
         <input class="duzenle-alan" data-alan="note" value="${guvenliMetin(arac.note)}" />
       </label>
+      <label>Site adresi (URL)
+        <input class="duzenle-alan" data-alan="url" value="${guvenliMetin(arac.url || "")}" />
+      </label>
       <div class="duzenle-aksiyonlar">
         <button class="kaydet-btn" data-isim="${ad}">💾 Kaydet</button>
         <button class="iptal-btn">İptal</button>
@@ -352,6 +355,7 @@ function duzenlemeyiKaydet(eskiIsim, kartEl) {
   arac.purpose = alanlar.purpose;
   arac.owner = alanlar.owner;
   arac.note = alanlar.note;
+  arac.url = urlDuzenle(alanlar.url || ""); // boşsa "" -> kartta buton çıkmaz
 
   duzenlenenArac = null;
   araclariKaydet();
@@ -532,6 +536,18 @@ const ekleCategory = document.querySelector("#ekle-category");
 const eklePurpose = document.querySelector("#ekle-purpose");
 const ekleOwner = document.querySelector("#ekle-owner");
 const ekleNote = document.querySelector("#ekle-note");
+const ekleUrl = document.querySelector("#ekle-url");
+
+// urlDuzenle: kullanıcının girdiği adresi güvenli/temiz hale getirir.
+// - Boşsa "" döner (kartta buton hiç çıkmaz).
+// - Protokol yoksa başına https:// ekler (kullanıcı dostu).
+// - Yalnızca http/https'e izin verir; "javascript:" gibi şemalar etkisizleşir.
+function urlDuzenle(ham) {
+  const deger = ham.trim();
+  if (!deger) return "";
+  if (/^https?:\/\//i.test(deger)) return deger;
+  return "https://" + deger.replace(/^\/+/, "");
+}
 
 // Aç/kapa: butona basınca form görünür/gizlenir.
 ekleAcBtn.addEventListener("click", function () {
@@ -554,6 +570,7 @@ ekleForm.addEventListener("submit", function (olay) {
     purpose: eklePurpose.value.trim(),
     owner: ekleOwner.value.trim(),
     note: ekleNote.value.trim(),
+    url: urlDuzenle(ekleUrl.value), // boşsa "" -> kartta "Siteye Git" çıkmaz
   };
 
   // Ad zorunlu.
