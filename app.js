@@ -51,6 +51,102 @@ const VARSAYILAN_ARACLAR = [
     note: "Tasarım bilgisi gerektirmez.",
     url: "https://www.canva.com",
   },
+  {
+    name: "Adobe Firefly",
+    category: "Görsel",
+    purpose: "Metin komutlarından görsel ve tasarım öğeleri üreten yapay zeka.",
+    owner: "Adobe",
+    note: "Adobe uygulamalarıyla entegre çalışır.",
+    url: "https://firefly.adobe.com",
+  },
+  {
+    name: "Leonardo.ai",
+    category: "Görsel",
+    purpose: "Oyun ve konsept sanatı için görsel üreten araç.",
+    owner: "Leonardo.ai",
+    note: "Ücretsiz kredilerle başlanabilir.",
+    url: "https://leonardo.ai",
+  },
+  {
+    name: "ElevenLabs",
+    category: "Ses/Müzik",
+    purpose: "Gerçekçi yapay ses ve seslendirme üreten araç.",
+    owner: "ElevenLabs",
+    note: "Çok dilli seslendirme desteği.",
+    url: "https://elevenlabs.io",
+  },
+  {
+    name: "Suno",
+    category: "Ses/Müzik",
+    purpose: "Metinden şarkı ve müzik üreten yapay zeka.",
+    owner: "Suno",
+    note: "Sözlü şarkı bile oluşturabilir.",
+    url: "https://suno.com",
+  },
+  {
+    name: "Runway",
+    category: "Video",
+    purpose: "Metin ve görselden video üreten/düzenleyen araç.",
+    owner: "Runway",
+    note: "Video düzenlemede güçlü.",
+    url: "https://runwayml.com",
+  },
+  {
+    name: "Pika",
+    category: "Video",
+    purpose: "Kısa videolar üreten ve görselleri canlandıran yapay zeka.",
+    owner: "Pika Labs",
+    note: "Hızlı klip üretimi.",
+    url: "https://pika.art",
+  },
+  {
+    name: "Notion AI",
+    category: "Verimlilik",
+    purpose: "Notlar ve belgeler için yazma/özetleme asistanı.",
+    owner: "Notion",
+    note: "Notion içine gömülü çalışır.",
+    url: "https://www.notion.so/product/ai",
+  },
+  {
+    name: "Otter.ai",
+    category: "Verimlilik",
+    purpose: "Toplantıları otomatik yazıya döken ve özetleyen araç.",
+    owner: "Otter.ai",
+    note: "Canlı transkripsiyon yapar.",
+    url: "https://otter.ai",
+  },
+  {
+    name: "Perplexity",
+    category: "Araştırma",
+    purpose: "Kaynak gösteren yapay zeka tabanlı arama asistanı.",
+    owner: "Perplexity AI",
+    note: "Cevapları kaynaklarıyla verir.",
+    url: "https://www.perplexity.ai",
+  },
+  {
+    name: "NotebookLM",
+    category: "Araştırma",
+    purpose: "Yüklediğin belgelerden özet ve yanıt üreten araştırma aracı.",
+    owner: "Google",
+    note: "Sadece verdiğin kaynaklara dayanır.",
+    url: "https://notebooklm.google.com",
+  },
+  {
+    name: "Cursor",
+    category: "Kod",
+    purpose: "Yapay zeka destekli kod editörü.",
+    owner: "Anysphere",
+    note: "Kod tabanınla sohbet edebilirsin.",
+    url: "https://cursor.com",
+  },
+  {
+    name: "Replit",
+    category: "Kod",
+    purpose: "Tarayıcıda kod yazma ortamı ve yapay zeka asistanı.",
+    owner: "Replit",
+    note: "Kurulum gerektirmez.",
+    url: "https://replit.com",
+  },
 ];
 
 // --- ARAÇ VERİSİNİN KALICILIĞI (localStorage) ---
@@ -66,13 +162,25 @@ function araclariYukle() {
     const liste = JSON.parse(kayit);
     if (!Array.isArray(liste)) return VARSAYILAN_ARACLAR.map((a) => ({ ...a }));
 
-    // Geriye dönük uyum: daha önce url'siz kaydedilmiş araçlara, adı eşleşen
-    // varsayılandan url'yi ekle (kullanıcının kendi verisi korunur).
-    return liste.map((arac) => {
+    // Geriye dönük uyum: url'siz kayıtlara adı eşleşen varsayılandan url ekle.
+    const kayitli = liste.map((arac) => {
       if (arac.url) return arac;
       const varsayilan = VARSAYILAN_ARACLAR.find((v) => v.name === arac.name);
       return varsayilan ? { ...arac, url: varsayilan.url } : arac;
     });
+
+    // BİRLEŞTİRME:
+    // - kayitli = kullanıcının mevcut aktif listesi (düzenleme + eklemeler dahil).
+    // - Silinen adları hariç tut ki tekrar çıkmasınlar.
+    // - Kayıtlıda OLMAYAN ve silinmemiş sabit araçları ekle
+    //   (koda yeni eklenen varsayılanlar da böylece otomatik görünür).
+    const kayitliAdlar = new Set(kayitli.map((a) => a.name));
+    const silinenAdlar = new Set(silinenAraclar.map((a) => a.name));
+    const eksikSabitler = VARSAYILAN_ARACLAR.filter(
+      (v) => !kayitliAdlar.has(v.name) && !silinenAdlar.has(v.name)
+    ).map((v) => ({ ...v }));
+
+    return [...kayitli, ...eksikSabitler];
   } catch (hata) {
     console.warn("Araçlar okunamadı, varsayılan liste kullanılıyor:", hata);
     return VARSAYILAN_ARACLAR.map((a) => ({ ...a }));
@@ -113,9 +221,11 @@ function silinenleriKaydet() {
   }
 }
 
-// tools: aktif liste. silinenAraclar: çöp kutusu. duzenlenenArac: düzenlenen ad.
-let tools = araclariYukle();
+// silinenAraclar'ı ÖNCE yükle: araclariYukle() birleştirme yaparken
+// "bu araç silinmiş mi?" kontrolü için bu listeye ihtiyaç duyar.
 let silinenAraclar = silinenleriYukle();
+// tools: sabit varsayılanlar + kullanıcının eklemeleri birleştirilerek yüklenir.
+let tools = araclariYukle();
 let duzenlenenArac = null;
 
 // guvenliMetin: HTML özel karakterlerini kaçırır. Kullanıcı artık araç
