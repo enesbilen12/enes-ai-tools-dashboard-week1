@@ -10,6 +10,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "OpenAI",
     note: "Genel amaçlı, başlangıç için popüler.",
     url: "https://chat.openai.com",
+    subscription: "Freemium",
   },
   {
     name: "Claude",
@@ -18,6 +19,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Anthropic",
     note: "Uzun belgelerle çalışmada iyi.",
     url: "https://claude.ai",
+    subscription: "Freemium",
   },
   {
     name: "Gemini",
@@ -26,6 +28,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Google",
     note: "Google araçlarını kullananlar için pratik.",
     url: "https://gemini.google.com",
+    subscription: "Freemium",
   },
   {
     name: "Midjourney",
@@ -34,6 +37,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Midjourney",
     note: "Görsel kalitesi yüksek.",
     url: "https://www.midjourney.com",
+    subscription: "Ücretli",
   },
   {
     name: "GitHub Copilot",
@@ -42,6 +46,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "GitHub",
     note: "Editör içinde çalışır.",
     url: "https://github.com/features/copilot",
+    subscription: "Ücretli",
   },
   {
     name: "Canva",
@@ -50,6 +55,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Canva",
     note: "Tasarım bilgisi gerektirmez.",
     url: "https://www.canva.com",
+    subscription: "Freemium",
   },
   {
     name: "Adobe Firefly",
@@ -58,6 +64,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Adobe",
     note: "Adobe uygulamalarıyla entegre çalışır.",
     url: "https://firefly.adobe.com",
+    subscription: "Freemium",
   },
   {
     name: "Leonardo.ai",
@@ -66,6 +73,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Leonardo.ai",
     note: "Ücretsiz kredilerle başlanabilir.",
     url: "https://leonardo.ai",
+    subscription: "Freemium",
   },
   {
     name: "ElevenLabs",
@@ -74,6 +82,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "ElevenLabs",
     note: "Çok dilli seslendirme desteği.",
     url: "https://elevenlabs.io",
+    subscription: "Freemium",
   },
   {
     name: "Suno",
@@ -82,6 +91,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Suno",
     note: "Sözlü şarkı bile oluşturabilir.",
     url: "https://suno.com",
+    subscription: "Freemium",
   },
   {
     name: "Runway",
@@ -90,6 +100,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Runway",
     note: "Video düzenlemede güçlü.",
     url: "https://runwayml.com",
+    subscription: "Freemium",
   },
   {
     name: "Pika",
@@ -98,6 +109,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Pika Labs",
     note: "Hızlı klip üretimi.",
     url: "https://pika.art",
+    subscription: "Freemium",
   },
   {
     name: "Notion AI",
@@ -106,6 +118,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Notion",
     note: "Notion içine gömülü çalışır.",
     url: "https://www.notion.so/product/ai",
+    subscription: "Freemium",
   },
   {
     name: "Otter.ai",
@@ -114,6 +127,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Otter.ai",
     note: "Canlı transkripsiyon yapar.",
     url: "https://otter.ai",
+    subscription: "Freemium",
   },
   {
     name: "Perplexity",
@@ -122,6 +136,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Perplexity AI",
     note: "Cevapları kaynaklarıyla verir.",
     url: "https://www.perplexity.ai",
+    subscription: "Freemium",
   },
   {
     name: "NotebookLM",
@@ -130,6 +145,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Google",
     note: "Sadece verdiğin kaynaklara dayanır.",
     url: "https://notebooklm.google.com",
+    subscription: "Ücretsiz",
   },
   {
     name: "Cursor",
@@ -138,6 +154,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Anysphere",
     note: "Kod tabanınla sohbet edebilirsin.",
     url: "https://cursor.com",
+    subscription: "Freemium",
   },
   {
     name: "Replit",
@@ -146,6 +163,7 @@ const VARSAYILAN_ARACLAR = [
     owner: "Replit",
     note: "Kurulum gerektirmez.",
     url: "https://replit.com",
+    subscription: "Freemium",
   },
 ];
 
@@ -162,11 +180,16 @@ function araclariYukle() {
     const liste = JSON.parse(kayit);
     if (!Array.isArray(liste)) return VARSAYILAN_ARACLAR.map((a) => ({ ...a }));
 
-    // Geriye dönük uyum: url'siz kayıtlara adı eşleşen varsayılandan url ekle.
+    // Geriye dönük uyum: url veya subscription'ı olmayan kayıtlara,
+    // adı eşleşen varsayılandan bu alanları ekle (kullanıcı verisi korunur).
     const kayitli = liste.map((arac) => {
-      if (arac.url) return arac;
       const varsayilan = VARSAYILAN_ARACLAR.find((v) => v.name === arac.name);
-      return varsayilan ? { ...arac, url: varsayilan.url } : arac;
+      const guncel = { ...arac };
+      if (!guncel.url && varsayilan) guncel.url = varsayilan.url;
+      if (!guncel.subscription && varsayilan) {
+        guncel.subscription = varsayilan.subscription;
+      }
+      return guncel;
     });
 
     // BİRLEŞTİRME:
@@ -238,6 +261,17 @@ function guvenliMetin(deger) {
     .replaceAll('"', "&quot;");
 }
 
+// abonelikSecenekleriHTML: abonelik dropdown'ı için <option>'lar üretir.
+// Mevcut değer "selected" olarak işaretlenir.
+function abonelikSecenekleriHTML(secili) {
+  return ["Ücretsiz", "Freemium", "Ücretli"]
+    .map(
+      (tip) =>
+        `<option value="${tip}"${tip === secili ? " selected" : ""}>${tip}</option>`
+    )
+    .join("");
+}
+
 // duzenlemeFormuHTML: bir aracı düzenlemek için kart içi form üretir.
 function duzenlemeFormuHTML(arac) {
   const ad = guvenliMetin(arac.name);
@@ -260,6 +294,11 @@ function duzenlemeFormuHTML(arac) {
       </label>
       <label>Site adresi (URL)
         <input class="duzenle-alan" data-alan="url" value="${guvenliMetin(arac.url || "")}" />
+      </label>
+      <label>Abonelik
+        <select class="duzenle-alan" data-alan="subscription">
+          ${abonelikSecenekleriHTML(arac.subscription)}
+        </select>
       </label>
       <div class="duzenle-aksiyonlar">
         <button class="kaydet-btn" data-isim="${ad}">💾 Kaydet</button>
@@ -292,10 +331,16 @@ function kartOlustur(arac) {
           target="_blank" rel="noopener noreferrer">🔗 Siteye Git</a>`
     : "";
 
+  // Abonelik tipi varsa küçük bir rozet göster (yoksa boş).
+  const abonelikRozeti = arac.subscription
+    ? `<span class="abonelik">${guvenliMetin(arac.subscription)}</span>`
+    : "";
+
   kart.innerHTML = `
     <button class="favori-btn${aktifSinif}" data-isim="${ad}"
             title="Favori" aria-label="Favorilere ekle veya çıkar">${yildiz}</button>
     <h2>${ad}</h2>
+    ${abonelikRozeti}
     <p><strong>Kategori:</strong> ${guvenliMetin(arac.category)}</p>
     <p>${guvenliMetin(arac.purpose)}</p>
     <p><strong>Geliştiren:</strong> ${guvenliMetin(arac.owner)}</p>
@@ -466,6 +511,7 @@ function duzenlemeyiKaydet(eskiIsim, kartEl) {
   arac.owner = alanlar.owner;
   arac.note = alanlar.note;
   arac.url = urlDuzenle(alanlar.url || ""); // boşsa "" -> kartta buton çıkmaz
+  arac.subscription = alanlar.subscription || "";
 
   duzenlenenArac = null;
   araclariKaydet();
@@ -647,6 +693,7 @@ const eklePurpose = document.querySelector("#ekle-purpose");
 const ekleOwner = document.querySelector("#ekle-owner");
 const ekleNote = document.querySelector("#ekle-note");
 const ekleUrl = document.querySelector("#ekle-url");
+const ekleSubscription = document.querySelector("#ekle-subscription");
 
 // urlDuzenle: kullanıcının girdiği adresi güvenli/temiz hale getirir.
 // - Boşsa "" döner (kartta buton hiç çıkmaz).
@@ -681,6 +728,7 @@ ekleForm.addEventListener("submit", function (olay) {
     owner: ekleOwner.value.trim(),
     note: ekleNote.value.trim(),
     url: urlDuzenle(ekleUrl.value), // boşsa "" -> kartta "Siteye Git" çıkmaz
+    subscription: ekleSubscription.value, // dropdown -> her zaman bir değer var
   };
 
   // Ad zorunlu.
