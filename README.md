@@ -138,6 +138,40 @@ Bu projeyi geliştirirken pratikte öğrendiğim konular:
 - **DevTools** — `F12` ile Console (hata/`console.log`) ve Application
   (localStorage) sekmelerini kullanma.
 
+## 🧪 Test Notları
+
+Proje geliştirilirken manuel olarak test edilen özellikler ve karşılaşılan
+sorunlar aşağıda özetlenmiştir.
+
+### Test edilen özellikler
+
+- [x] **Arama** — isim, kategori ve açıklama içinde canlı arama
+- [x] **Kategori filtresi** — açılır menüden kategoriye göre süzme
+- [x] **Arama + kategori birlikte** — iki filtrenin aynı anda uygulanması
+- [x] **Favoriler** — yıldızla ekleme/çıkarma ve kalıcılık
+- [x] **Mobil / responsive görünüm** — dar ekranda kartların alt alta dizilmesi
+- [x] **Boş sonuç mesajı** — eşleşme yoksa "Araç bulunamadı" gösterimi
+- [x] **localStorage kalıcılığı** — sayfa yenilenince verilerin korunması
+- [x] **"Siteye Git" butonu** — URL'li kartlarda yeni sekmede site açma
+- [x] **Araç ekleme / silme / düzenleme** — tam CRUD akışı
+- [x] **Silinen araçlar menüsü** — silinenleri geri yükleme
+- [x] **Karanlık / açık tema** — tema geçişi ve tercihin saklanması
+- [x] **Özet kutuları** — toplam ve favori araç sayısının otomatik güncellenmesi
+
+### Bulunan hatalar ve çözümleri
+
+| # | Sorun | Çözüm |
+|---|-------|-------|
+| 1 | `file://` ile açınca `localStorage` kısıtlanıyor, favoriler kaydolmuyordu | **Live Server** ile `http://` üzerinden çalıştırılarak çözüldü |
+| 2 | macOS'un `.DS_Store` sistem dosyası yanlışlıkla repoya eklendi | **`.gitignore`** eklenip dosya takipten çıkarılarak çözüldü |
+| 3 | GitHub Pages deploy adımı başarısız oldu ("Deployment failed") | Deploy **yeniden tetiklenerek / ayar yenilenerek** çözüldü |
+
+### Bilinen kısıt
+
+- **`localStorage` cihaza ve tarayıcıya özeldir.** Bir cihazda eklenen araçlar
+  başka bir cihazda veya başka bir tarayıcıda görünmez. Herkesin aynı veriyi
+  görmesi için sunucu tabanlı bir veritabanı gerekir (bu projenin kapsamı dışında).
+
 ## 📄 Lisans
 
 Bu proje **MIT Lisansı** ile açık kaynaktır; herkes özgürce kullanabilir,
