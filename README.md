@@ -17,6 +17,16 @@ gerektirmez. Yazılım eğitimi 1. hafta projesi.
 
 ![AI Araçları Paneli ekran görüntüsü](screenshot.png)
 
+## 🎯 2. Hafta Hedefleri
+
+Bu hafta panele eklemeyi planladığım özellikler:
+
+- [ ] **`data.json` ile `fetch`** — başlangıç araç verisini koddan ayırıp
+  `data.json` dosyasından `fetch` ile yükleme (fetch başarısızsa gömülü yedek liste).
+- [ ] **Inline form validation** — `alert()` yerine form içinde kırmızı hata satırı.
+- [ ] **JSON export özelliği** — mevcut araç listesini `.json` olarak dışa aktarma.
+- [ ] **README ve test checklist güncelleme** — belgeleri 2. haftaya taşıma.
+
 ## ✨ Özellikler
 
 - **Veriden kart üretimi** — Araçlar JavaScript'teki bir listeden okunur ve
