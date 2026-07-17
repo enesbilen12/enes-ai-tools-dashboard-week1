@@ -25,7 +25,8 @@ Her gün ne yaptığımı kısaca not aldığım dosya. En yeni gün en üstte.
   ayıklama yöntemi: "console'da hata yok" demek "kod çalışıyor" demek değilmiş —
   fetch'i elle test edip sorunu daraltmak, hiç yazılmamış fonksiyonu bulmayı
   sağladı.
-- **Yarın yapacağım iş:**
+- **Yarın yapacağım iş:** Form doğrulamasını (inline validation) eklemek;
+  alert() yerine hatayı formun içinde kırmızı mesaj olarak göstermek.
 - **Commit mesajı:** feat: load initial data with fetch and fallback
 
 ---
