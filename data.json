@@ -1,0 +1,164 @@
+[
+  {
+    "name": "ChatGPT",
+    "category": "Metin",
+    "purpose": "Soru yanıtlama ve metin üretme için sohbet tabanlı yapay zeka.",
+    "owner": "OpenAI",
+    "note": "Genel amaçlı, başlangıç için popüler.",
+    "url": "https://chat.openai.com",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "Claude",
+    "category": "Metin",
+    "purpose": "Uzun metinlerde ve kod yazımında güçlü sohbet asistanı.",
+    "owner": "Anthropic",
+    "note": "Uzun belgelerle çalışmada iyi.",
+    "url": "https://claude.ai",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "Gemini",
+    "category": "Metin",
+    "purpose": "Google servisleriyle bütünleşik sohbet ve arama asistanı.",
+    "owner": "Google",
+    "note": "Google araçlarını kullananlar için pratik.",
+    "url": "https://gemini.google.com",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "Midjourney",
+    "category": "Görsel",
+    "purpose": "Yazdığın açıklamadan sanatsal görseller üreten araç.",
+    "owner": "Midjourney",
+    "note": "Görsel kalitesi yüksek.",
+    "url": "https://www.midjourney.com",
+    "subscription": "Ücretli"
+  },
+  {
+    "name": "GitHub Copilot",
+    "category": "Kod",
+    "purpose": "Kod yazarken satır ve fonksiyon önerileri sunan asistan.",
+    "owner": "GitHub",
+    "note": "Editör içinde çalışır.",
+    "url": "https://github.com/features/copilot",
+    "subscription": "Ücretli"
+  },
+  {
+    "name": "Canva",
+    "category": "Tasarım",
+    "purpose": "Sürükle-bırak ile afiş, sunum ve sosyal medya tasarımı.",
+    "owner": "Canva",
+    "note": "Tasarım bilgisi gerektirmez.",
+    "url": "https://www.canva.com",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "Adobe Firefly",
+    "category": "Görsel",
+    "purpose": "Metin komutlarından görsel ve tasarım öğeleri üreten yapay zeka.",
+    "owner": "Adobe",
+    "note": "Adobe uygulamalarıyla entegre çalışır.",
+    "url": "https://firefly.adobe.com",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "Leonardo.ai",
+    "category": "Görsel",
+    "purpose": "Oyun ve konsept sanatı için görsel üreten araç.",
+    "owner": "Leonardo.ai",
+    "note": "Ücretsiz kredilerle başlanabilir.",
+    "url": "https://leonardo.ai",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "ElevenLabs",
+    "category": "Ses/Müzik",
+    "purpose": "Gerçekçi yapay ses ve seslendirme üreten araç.",
+    "owner": "ElevenLabs",
+    "note": "Çok dilli seslendirme desteği.",
+    "url": "https://elevenlabs.io",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "Suno",
+    "category": "Ses/Müzik",
+    "purpose": "Metinden şarkı ve müzik üreten yapay zeka.",
+    "owner": "Suno",
+    "note": "Sözlü şarkı bile oluşturabilir.",
+    "url": "https://suno.com",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "Runway",
+    "category": "Video",
+    "purpose": "Metin ve görselden video üreten/düzenleyen araç.",
+    "owner": "Runway",
+    "note": "Video düzenlemede güçlü.",
+    "url": "https://runwayml.com",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "Pika",
+    "category": "Video",
+    "purpose": "Kısa videolar üreten ve görselleri canlandıran yapay zeka.",
+    "owner": "Pika Labs",
+    "note": "Hızlı klip üretimi.",
+    "url": "https://pika.art",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "Notion AI",
+    "category": "Verimlilik",
+    "purpose": "Notlar ve belgeler için yazma/özetleme asistanı.",
+    "owner": "Notion",
+    "note": "Notion içine gömülü çalışır.",
+    "url": "https://www.notion.so/product/ai",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "Otter.ai",
+    "category": "Verimlilik",
+    "purpose": "Toplantıları otomatik yazıya döken ve özetleyen araç.",
+    "owner": "Otter.ai",
+    "note": "Canlı transkripsiyon yapar.",
+    "url": "https://otter.ai",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "Perplexity",
+    "category": "Araştırma",
+    "purpose": "Kaynak gösteren yapay zeka tabanlı arama asistanı.",
+    "owner": "Perplexity AI",
+    "note": "Cevapları kaynaklarıyla verir.",
+    "url": "https://www.perplexity.ai",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "NotebookLM",
+    "category": "Araştırma",
+    "purpose": "Yüklediğin belgelerden özet ve yanıt üreten araştırma aracı.",
+    "owner": "Google",
+    "note": "Sadece verdiğin kaynaklara dayanır.",
+    "url": "https://notebooklm.google.com",
+    "subscription": "Ücretsiz"
+  },
+  {
+    "name": "Cursor",
+    "category": "Kod",
+    "purpose": "Yapay zeka destekli kod editörü.",
+    "owner": "Anysphere",
+    "note": "Kod tabanınla sohbet edebilirsin.",
+    "url": "https://cursor.com",
+    "subscription": "Freemium"
+  },
+  {
+    "name": "Replit",
+    "category": "Kod",
+    "purpose": "Tarayıcıda kod yazma ortamı ve yapay zeka asistanı.",
+    "owner": "Replit",
+    "note": "Kurulum gerektirmez.",
+    "url": "https://replit.com",
+    "subscription": "Freemium"
+  }
+]

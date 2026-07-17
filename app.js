@@ -1,8 +1,10 @@
 // app.js: Sayfanın davranışı (veri, çizim, arama, favoriler, düzenle/sil, tema).
 
-// VARSAYILAN_ARACLAR: ilk açılışta kullanılacak hazır liste.
-// Kullanıcı silme/düzenleme yaparsa çalışan liste localStorage'da tutulur.
-const VARSAYILAN_ARACLAR = [
+// VARSAYILAN_ARACLAR: GÖMÜLÜ YEDEK liste.
+// Normalde başlangıç verisi data.json'dan fetch ile gelir (bkz. baslat()).
+// fetch başarısız olursa (örn. çift-tıkla file:// açılışı) bu liste devreye girer.
+// `let`: fetch başarılıysa üzerine data.json'daki liste yazılır.
+let VARSAYILAN_ARACLAR = [
   {
     name: "ChatGPT",
     category: "Metin",
@@ -247,8 +249,9 @@ function silinenleriKaydet() {
 // silinenAraclar'ı ÖNCE yükle: araclariYukle() birleştirme yaparken
 // "bu araç silinmiş mi?" kontrolü için bu listeye ihtiyaç duyar.
 let silinenAraclar = silinenleriYukle();
-// tools: sabit varsayılanlar + kullanıcının eklemeleri birleştirilerek yüklenir.
-let tools = araclariYukle();
+// tools: başlangıçta boş; asıl veri dosyanın sonundaki baslat() içinde
+// (localStorage veya data.json'dan) yüklenir.
+let tools = [];
 let duzenlenenArac = null;
 
 // guvenliMetin: HTML özel karakterlerini kaçırır. Kullanıcı artık araç
@@ -557,8 +560,7 @@ document.querySelector("main").addEventListener("click", function (olay) {
   }
 });
 
-// Sayfa açılınca kartları çiz.
-renderTools();
+// Not: ilk çizim, dosyanın sonundaki baslat() içinde (veri yüklendikten sonra) yapılır.
 
 // --- ARAMA / FİLTRELEME ---
 
@@ -607,7 +609,7 @@ function applyFilters() {
   renderTools(filtrelenmisAraclar);
 }
 
-kategorileriDoldur();
+// Not: kategorileriDoldur() ilk kez baslat() içinde çağrılır (veri gelince).
 aramaKutusu.addEventListener("input", applyFilters);
 kategoriKutusu.addEventListener("change", applyFilters);
 
@@ -749,3 +751,31 @@ ekleForm.addEventListener("submit", function (olay) {
   ekleForm.classList.add("gizli");
   applyFilters(); // listeyi yeniden çiz
 });
+
+// --- BAŞLATMA ---
+
+// Sayfa açılışında bir kez çalışır: veriyi hazırlar, sonra ekranı çizer.
+async function baslat() {
+  try {
+    const yanit = await fetch("data.json");
+    if (!yanit.ok) throw new Error(`data.json okunamadı (HTTP ${yanit.status})`);
+
+    const veri = await yanit.json();
+    // Boş/bozuk dosya gömülü yedeği ezmesin diye dolu dizi şartı arıyoruz.
+    if (Array.isArray(veri) && veri.length > 0) {
+      VARSAYILAN_ARACLAR = veri;
+    }
+  } catch (hata) {
+    // Tipik sebep: dosyaya çift tıklayıp file:// ile açmak (tarayıcı engeller).
+    // Sorun değil: gömülü VARSAYILAN_ARACLAR yedeği olduğu gibi kalır.
+    console.warn("data.json alınamadı, gömülü liste kullanılıyor:", hata);
+  }
+
+  // Doğrudan atama yapmıyoruz: araclariYukle() varsayılanları localStorage'daki
+  // kullanıcı verisiyle birleştirir ve silinenleri eler.
+  tools = araclariYukle();
+  kategorileriDoldur();
+  applyFilters(); // ilk çizim
+}
+
+baslat();
