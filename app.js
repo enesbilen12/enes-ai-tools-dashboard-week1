@@ -293,6 +293,17 @@ function abonelikSecenekleriHTML(secili) {
     .join("");
 }
 
+// durumSecenekleriHTML: durum dropdown'ı için <option>'lar üretir.
+// abonelikSecenekleriHTML ile aynı mantık; liste Aktif/Deneme/Pasif.
+function durumSecenekleriHTML(secili) {
+  return ["Aktif", "Deneme", "Pasif"]
+    .map(
+      (durum) =>
+        `<option value="${durum}"${durum === secili ? " selected" : ""}>${durum}</option>`
+    )
+    .join("");
+}
+
 // duzenlemeFormuHTML: bir aracı düzenlemek için kart içi form üretir.
 function duzenlemeFormuHTML(arac) {
   const ad = guvenliMetin(arac.name);
@@ -319,6 +330,11 @@ function duzenlemeFormuHTML(arac) {
       <label>Abonelik
         <select class="duzenle-alan" data-alan="subscription">
           ${abonelikSecenekleriHTML(arac.subscription)}
+        </select>
+      </label>
+      <label>Durum
+        <select class="duzenle-alan" data-alan="status">
+          ${durumSecenekleriHTML(arac.status || "Aktif")}
         </select>
       </label>
       <div class="duzenle-aksiyonlar">
@@ -357,11 +373,15 @@ function kartOlustur(arac) {
     ? `<span class="abonelik">${guvenliMetin(arac.subscription)}</span>`
     : "";
 
+  // Durum rozeti: status yoksa "Aktif" varsayılır (eski kullanıcı araçları için).
+  const durumRozeti = `<span class="abonelik">${guvenliMetin(arac.status || "Aktif")}</span>`;
+
   kart.innerHTML = `
     <button class="favori-btn${aktifSinif}" data-isim="${ad}"
             title="Favori" aria-label="Favorilere ekle veya çıkar">${yildiz}</button>
     <h2>${ad}</h2>
     ${abonelikRozeti}
+    ${durumRozeti}
     <p><strong>Kategori:</strong> ${guvenliMetin(arac.category)}</p>
     <p>${guvenliMetin(arac.purpose)}</p>
     <p><strong>Geliştiren:</strong> ${guvenliMetin(arac.owner)}</p>
@@ -533,6 +553,7 @@ function duzenlemeyiKaydet(eskiIsim, kartEl) {
   arac.note = alanlar.note;
   arac.url = urlDuzenle(alanlar.url || ""); // boşsa "" -> kartta buton çıkmaz
   arac.subscription = alanlar.subscription || "";
+  arac.status = alanlar.status || "Aktif"; // status boşsa Aktif kabul et
 
   duzenlenenArac = null;
   araclariKaydet();
@@ -730,6 +751,7 @@ const ekleOwner = document.querySelector("#ekle-owner");
 const ekleNote = document.querySelector("#ekle-note");
 const ekleUrl = document.querySelector("#ekle-url");
 const ekleSubscription = document.querySelector("#ekle-subscription");
+const ekleDurum = document.querySelector("#ekle-durum");
 
 // urlDuzenle: kullanıcının girdiği adresi güvenli/temiz hale getirir.
 // - Boşsa "" döner (kartta buton hiç çıkmaz).
@@ -765,6 +787,7 @@ ekleForm.addEventListener("submit", function (olay) {
     note: ekleNote.value.trim(),
     url: urlDuzenle(ekleUrl.value), // boşsa "" -> kartta "Siteye Git" çıkmaz
     subscription: ekleSubscription.value, // dropdown -> her zaman bir değer var
+    status: ekleDurum.value, // dropdown -> varsayılan "Aktif"
   };
 
   // Ad zorunlu.
