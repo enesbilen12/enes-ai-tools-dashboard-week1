@@ -4,6 +4,32 @@ Her gün ne yaptığımı kısaca not aldığım dosya. En yeni gün en üstte.
 
 ---
 
+## Gün 3
+
+- **Tarih:** 2026-07-18
+- **Bugünkü hedef:** Status filtresi (Aktif / Deneme / Pasif) ve reset butonu
+  eklemek.
+- **İzlediğim / okuduğum kaynaklar:**
+- **Yaptığım değişiklikler:** index.html'e durum menüsü ve "Filtreleri Temizle"
+  butonu eklendi; app.js'e status filtreleme mantığı eklendi (status alanı
+  olmayan araç "Aktif" kabul edilir; üç filtre AND mantığıyla birlikte çalışır).
+- **Değişen dosyalar:** index.html, app.js
+- **Claude Code'a verdiğim ana prompt:** "Mevcut arama ve kategori filtresine ek
+  olarak status filtresi eklemek (Aktif / Deneme / Pasif)... Reset butonu tüm
+  filtreleri temizlesin."
+- **Test ettiklerim:** Durum filtresi (Aktif / Deneme / Pasif), üç filtrenin
+  birlikte çalışması, reset butonu.
+- **Geçen testler:** Aktif filtresi tüm araçları gösteriyor; Deneme/Pasif boş
+  liste gösteriyor (henüz status atanmış araç yok); reset butonu tüm filtreleri
+  temizliyor.
+- **Kalan sorunlar:**
+- **Bugün öğrendiğim kavram:** event listener, DOM manipülasyonu, AND mantığıyla
+  filtre.
+- **Yarın yapacağım iş:** Inline form validation eklemek.
+- **Commit mesajı:** feat: add status filter and reset button
+
+---
+
 ## Gün 2
 
 - **Tarih:** 2026-07-17

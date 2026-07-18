@@ -13,3 +13,6 @@ Durum sütununu test ederken doldur: **Geçti** / **Kaldı**.
 | **localStorage** | Bir araç ekle/sil → sayfayı yenile | Değişiklikler korunur (kaybolmaz) | |
 | **Silme** | Bir kartta "Sil" → onayla | Kart listeden çıkar, "Silinen Araçlar" sayacı artar | |
 | **JSON export** | Verinin data.json ile aynı yapıda olduğunu doğrula | Araç nesneleri data.json şemasıyla uyumlu (name, category, purpose, owner, note, url, subscription) | |
+| **Status filtresi Aktif** | Durum menüsünden "Aktif" seç | Tüm araçlar görünür (status alanı olmayan araç Aktif kabul edilir) | Geçti |
+| **Status filtresi Deneme/Pasif** | Durum menüsünden "Deneme" veya "Pasif" seç | Liste boşalır (henüz status atanmış araç yok) | Geçti |
+| **Reset butonu** | Arama/kategori/durum seç → "Filtreleri Temizle" tıkla | Üç filtre de varsayılana döner, tüm araçlar geri gelir | Geçti |
