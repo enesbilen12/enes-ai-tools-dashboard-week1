@@ -57,11 +57,15 @@
     <button id="ekle-ac-btn" class="ekle-ac-btn">➕ Yeni Araç Ekle</button>
     <form id="ekle-form" class="ekle-form gizli">
       <input id="ekle-name" class="ekle-alan" placeholder="Ad (zorunlu)" />
-      <input id="ekle-category" class="ekle-alan" placeholder="Kategori" />
-      <input id="ekle-purpose" class="ekle-alan" placeholder="Kullanım amacı" />
+      <p id="hata-name" class="hata-mesaji" style="color:#c0392b; font-size:12px; margin:0"></p>
+      <input id="ekle-category" class="ekle-alan" placeholder="Kategori (zorunlu)" />
+      <p id="hata-category" class="hata-mesaji" style="color:#c0392b; font-size:12px; margin:0"></p>
+      <input id="ekle-purpose" class="ekle-alan" placeholder="Kullanım amacı (zorunlu)" />
+      <p id="hata-purpose" class="hata-mesaji" style="color:#c0392b; font-size:12px; margin:0"></p>
       <input id="ekle-owner" class="ekle-alan" placeholder="Geliştiren" />
       <input id="ekle-note" class="ekle-alan" placeholder="Not" />
-      <input id="ekle-url" class="ekle-alan" placeholder="Site adresi (URL) — isteğe bağlı" />
+      <input id="ekle-url" class="ekle-alan" placeholder="Site adresi (URL) — http:// veya https:// ile" />
+      <p id="hata-url" class="hata-mesaji" style="color:#c0392b; font-size:12px; margin:0"></p>
       <select id="ekle-subscription" class="ekle-alan">
         <option value="Ücretsiz">Ücretsiz</option>
         <option value="Freemium">Freemium</option>

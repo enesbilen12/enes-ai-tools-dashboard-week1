@@ -764,14 +764,48 @@ function urlDuzenle(ham) {
   return "https://" + deger.replace(/^\/+/, "");
 }
 
+// validateForm: yeni araç verisini kontrol eder, hatalı alanları döndürür.
+// Boş nesne dönerse form geçerlidir; { alan: mesaj } dönerse o alanlar hatalı.
+function validateForm(veri) {
+  const hatalar = {};
+
+  // Ad: boş olamaz ve aynı adlı aktif araç bulunamaz (isim = kimlik).
+  // Karşılaştırma büyük/küçük harf duyarsız: "ChatGPT" ile "chatgpt" aynı sayılır.
+  if (!veri.name) hatalar.name = "Ad alanı zorunludur.";
+  else if (tools.some((a) => a.name.toLowerCase() === veri.name.toLowerCase())) {
+    hatalar.name = `"${veri.name}" adlı bir araç zaten var.`;
+  }
+
+  // Kategori ve amaç: boş geçilemez.
+  if (!veri.category) hatalar.category = "Kategori alanı zorunludur.";
+  if (!veri.purpose) hatalar.purpose = "Kullanım amacı zorunludur.";
+
+  // URL: zorunlu ve http:// veya https:// ile başlamalı.
+  if (!veri.url) hatalar.url = "URL alanı zorunludur.";
+  else if (!/^https?:\/\//i.test(veri.url)) {
+    hatalar.url = "URL http:// veya https:// ile başlamalı.";
+  }
+
+  return hatalar;
+}
+
+// hatalariGoster: hata mesajlarını ilgili alanların altına yazar.
+// Önce hepsini temizler, sonra sadece dolu olanları gösterir.
+function hatalariGoster(hatalar) {
+  ["name", "category", "purpose", "url"].forEach((alan) => {
+    document.querySelector("#hata-" + alan).textContent = hatalar[alan] || "";
+  });
+}
+
 // Aç/kapa: butona basınca form görünür/gizlenir.
 ekleAcBtn.addEventListener("click", function () {
   ekleForm.classList.toggle("gizli");
 });
 
-// İptal: formu temizle ve gizle.
+// İptal: formu temizle, hata mesajlarını sil ve gizle.
 ekleIptalBtn.addEventListener("click", function () {
   ekleForm.reset();
+  hatalariGoster({}); // eski hatalar kalmasın
   ekleForm.classList.add("gizli");
 });
 
@@ -781,30 +815,25 @@ ekleForm.addEventListener("submit", function (olay) {
 
   const yeniArac = {
     name: ekleName.value.trim(),
-    category: ekleCategory.value.trim() || "Diğer", // boşsa "Diğer"
+    category: ekleCategory.value.trim(), // zorunlu, varsayılan yok
     purpose: eklePurpose.value.trim(),
     owner: ekleOwner.value.trim(),
     note: ekleNote.value.trim(),
-    url: urlDuzenle(ekleUrl.value), // boşsa "" -> kartta "Siteye Git" çıkmaz
+    url: ekleUrl.value.trim(), // doğrulanacak; protokolü kullanıcı yazar
     subscription: ekleSubscription.value, // dropdown -> her zaman bir değer var
     status: ekleDurum.value, // dropdown -> varsayılan "Aktif"
   };
 
-  // Ad zorunlu.
-  if (!yeniArac.name) {
-    alert("Ad alanı zorunludur.");
-    return;
-  }
-  // İsim = kimlik: aynı adlı aktif araç olmamalı.
-  if (tools.some((a) => a.name === yeniArac.name)) {
-    alert(`"${yeniArac.name}" adlı bir araç zaten var.`);
-    return;
-  }
+  // Doğrula: hata varsa mesajları göster ve ekleme yapma.
+  const hatalar = validateForm(yeniArac);
+  hatalariGoster(hatalar);
+  if (Object.keys(hatalar).length > 0) return;
 
   tools.push(yeniArac);
   araclariKaydet();
   kategorileriDoldur(); // yeni kategori menüye yansısın
   ekleForm.reset();
+  hatalariGoster({}); // başarılı ekleme sonrası mesajları temizle
   ekleForm.classList.add("gizli");
   applyFilters(); // listeyi yeniden çiz
 });
