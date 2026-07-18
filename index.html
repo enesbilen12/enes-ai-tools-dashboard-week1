@@ -40,6 +40,16 @@
     />
     <!-- Kategori menüsü boş; seçenekleri app.js verisinden dolduracak. -->
     <select id="kategori" class="arama-kutusu"></select>
+    <!-- Durum menüsü: sabit liste olduğu için seçenekler doğrudan burada. -->
+    <select id="durum" class="arama-kutusu">
+      <option value="all">Tüm durumlar</option>
+      <option value="Aktif">Aktif</option>
+      <option value="Deneme">Deneme</option>
+      <option value="Pasif">Pasif</option>
+    </select>
+    <button id="filtre-sifirla-btn" class="arama-kutusu" type="button">
+      Filtreleri Temizle
+    </button>
   </section>
 
   <!-- Yeni araç ekleme: buton formu açar/kapatır, form app.js'e bağlıdır. -->

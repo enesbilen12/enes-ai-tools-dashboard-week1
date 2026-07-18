@@ -566,6 +566,8 @@ document.querySelector("main").addEventListener("click", function (olay) {
 
 const aramaKutusu = document.querySelector("#arama");
 const kategoriKutusu = document.querySelector("#kategori");
+const durumKutusu = document.querySelector("#durum");
+const sifirlaBtn = document.querySelector("#filtre-sifirla-btn");
 
 // Kategori seçeneklerini veriden üret; mevcut seçimi mümkünse koru.
 function kategorileriDoldur() {
@@ -585,8 +587,8 @@ function kategorileriDoldur() {
   if (halaVar) kategoriKutusu.value = oncekiSecim;
 }
 
-// aracFiltreyeUyuyor: araç hem arama metnine HEM seçili kategoriye uyuyor mu?
-function aracFiltreyeUyuyor(arac, aramaMetni, secilenKategori) {
+// aracFiltreyeUyuyor: araç arama metnine, kategoriye VE duruma birden uyuyor mu?
+function aracFiltreyeUyuyor(arac, aramaMetni, secilenKategori, secilenDurum) {
   const aranabilirMetin = (
     arac.name + " " + arac.category + " " + arac.purpose
   ).toLowerCase();
@@ -594,16 +596,20 @@ function aracFiltreyeUyuyor(arac, aramaMetni, secilenKategori) {
   const metinUyuyor = aranabilirMetin.includes(aramaMetni);
   const kategoriUyuyor =
     secilenKategori === "all" || arac.category === secilenKategori;
-  return metinUyuyor && kategoriUyuyor;
+  // status alanı olmayan araçları "Aktif" kabul et.
+  const aracDurumu = arac.status || "Aktif";
+  const durumUyuyor = secilenDurum === "all" || aracDurumu === secilenDurum;
+  return metinUyuyor && kategoriUyuyor && durumUyuyor;
 }
 
 // applyFilters: kullanıcının girdilerini okur, listeyi süzer ve çizer.
 function applyFilters() {
   const aramaMetni = aramaKutusu.value.toLowerCase();
   const secilenKategori = kategoriKutusu.value;
+  const secilenDurum = durumKutusu.value;
 
   const filtrelenmisAraclar = tools.filter(function (arac) {
-    return aracFiltreyeUyuyor(arac, aramaMetni, secilenKategori);
+    return aracFiltreyeUyuyor(arac, aramaMetni, secilenKategori, secilenDurum);
   });
 
   renderTools(filtrelenmisAraclar);
@@ -612,6 +618,16 @@ function applyFilters() {
 // Not: kategorileriDoldur() ilk kez baslat() içinde çağrılır (veri gelince).
 aramaKutusu.addEventListener("input", applyFilters);
 kategoriKutusu.addEventListener("change", applyFilters);
+durumKutusu.addEventListener("change", applyFilters);
+
+// Reset: üç filtreyi de varsayılana döndür, sonra listeyi yeniden çiz.
+function filtreleriSifirla() {
+  aramaKutusu.value = "";
+  kategoriKutusu.value = "all";
+  durumKutusu.value = "all";
+  applyFilters();
+}
+sifirlaBtn.addEventListener("click", filtreleriSifirla);
 
 // --- TEMA (açık / koyu) ---
 
