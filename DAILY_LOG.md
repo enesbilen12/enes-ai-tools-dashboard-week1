@@ -4,6 +4,35 @@ Her gün ne yaptığımı kısaca not aldığım dosya. En yeni gün en üstte.
 
 ---
 
+## Gün 4
+
+- **Tarih:** 2026-07-19
+- **Bugünkü hedef:** Form validasyonunu güçlendirmek.
+- **İzlediğim / okuduğum kaynaklar:**
+- **Yaptığım değişiklikler:** validateForm() fonksiyonu eklendi;
+  hatalariGoster() eklendi; alert() (ekleme formunda) kaldırılıp inline hata
+  mesajlarıyla değiştirildi; URL için http:// / https:// protokol kontrolü
+  eklendi; tekrar (aynı isim) kontrolü büyük/küçük harf duyarsız yapıldı.
+- **Değişen dosyalar:** index.html, app.js
+- **Claude Code'a verdiğim ana prompt:** "Mevcut araç ekleme formunun
+  validasyonunu güçlendirmek... validateForm() adında ayrı bir fonksiyon yaz...
+  Hata mesajları inline gösterilsin (alert() kullanma)."
+- **Test ettiklerim:** boş form, hatalı URL (protokolsüz), aynı isim
+  (büyük/küçük harf), geçerli kayıt, kısmi düzeltme.
+- **Geçen testler:** boş form dört alanda hata veriyor; protokolsüz URL
+  reddediliyor; aynı isim büyük/küçük harf fark etmeksizin yakalanıyor; geçerli
+  kayıt ekleniyor ve ekranda görünüyor.
+- **Kalan sorunlar:** İki alert() hâlâ kapsam dışı yerlerde duruyor (çöp kutusu
+  geri yükleme, düzenleme formu boş isim); düzenleme formunda tekrar-isim
+  kontrolü yok.
+- **Bugün öğrendiğim kavram:** form validation, regex (URL kontrolü), inline
+  hata mesajları.
+- **Yarın yapacağım iş:** localStorage ve JSON export.
+- **Commit mesajı:** feat: add form validation with inline errors and
+  case-insensitive duplicate check
+
+---
+
 ## Gün 3
 
 - **Tarih:** 2026-07-18

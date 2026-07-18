@@ -16,3 +16,8 @@ Durum sütununu test ederken doldur: **Geçti** / **Kaldı**.
 | **Status filtresi Aktif** | Durum menüsünden "Aktif" seç | Tüm araçlar görünür (status alanı olmayan araç Aktif kabul edilir) | Geçti |
 | **Status filtresi Deneme/Pasif** | Durum menüsünden "Deneme" veya "Pasif" seç | Liste boşalır (henüz status atanmış araç yok) | Geçti |
 | **Reset butonu** | Arama/kategori/durum seç → "Filtreleri Temizle" tıkla | Üç filtre de varsayılana döner, tüm araçlar geri gelir | Geçti |
+| **Boş form gönderimi** | Formu boş bırak → Ekle | name/category/purpose/url alanlarının altında kırmızı hata mesajı çıkar, araç eklenmez | Geçti |
+| **Hatalı URL** | URL'ye protokolsüz adres yaz (örn. `example.com`) → Ekle | "URL http:// veya https:// ile başlamalı." mesajı çıkar, araç eklenmez | Geçti |
+| **Aynı isim (harf duyarsız)** | Var olan bir aracın adını farklı harf düzeniyle gir (örn. `chatgpt`) → Ekle | "zaten var" mesajı çıkar; ChatGPT/chatgpt/CHATGPT aynı sayılır | Geçti |
+| **Geçerli kayıt** | name+category+purpose dolu, URL `https://ornek.com` → Ekle | Yeni kart listede görünür, form kapanır, localStorage'a yazılır (yenileyince kalır) | Geçti |
+| **Kısmi düzeltme** | Birden çok hatalı alan varken tek alanı düzelt → Ekle | Sadece düzeltilen alanın hatası kaybolur, kalan hatalar durur | Geçti |
