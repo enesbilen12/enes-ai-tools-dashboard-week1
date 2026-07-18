@@ -6,7 +6,8 @@
     "owner": "OpenAI",
     "note": "Genel amaçlı, başlangıç için popüler.",
     "url": "https://chat.openai.com",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "Claude",
@@ -15,7 +16,8 @@
     "owner": "Anthropic",
     "note": "Uzun belgelerle çalışmada iyi.",
     "url": "https://claude.ai",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "Gemini",
@@ -24,7 +26,8 @@
     "owner": "Google",
     "note": "Google araçlarını kullananlar için pratik.",
     "url": "https://gemini.google.com",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "Midjourney",
@@ -33,7 +36,8 @@
     "owner": "Midjourney",
     "note": "Görsel kalitesi yüksek.",
     "url": "https://www.midjourney.com",
-    "subscription": "Ücretli"
+    "subscription": "Ücretli",
+    "status": "Aktif"
   },
   {
     "name": "GitHub Copilot",
@@ -42,7 +46,8 @@
     "owner": "GitHub",
     "note": "Editör içinde çalışır.",
     "url": "https://github.com/features/copilot",
-    "subscription": "Ücretli"
+    "subscription": "Ücretli",
+    "status": "Aktif"
   },
   {
     "name": "Canva",
@@ -51,7 +56,8 @@
     "owner": "Canva",
     "note": "Tasarım bilgisi gerektirmez.",
     "url": "https://www.canva.com",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "Adobe Firefly",
@@ -60,7 +66,8 @@
     "owner": "Adobe",
     "note": "Adobe uygulamalarıyla entegre çalışır.",
     "url": "https://firefly.adobe.com",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "Leonardo.ai",
@@ -69,7 +76,8 @@
     "owner": "Leonardo.ai",
     "note": "Ücretsiz kredilerle başlanabilir.",
     "url": "https://leonardo.ai",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "ElevenLabs",
@@ -78,7 +86,8 @@
     "owner": "ElevenLabs",
     "note": "Çok dilli seslendirme desteği.",
     "url": "https://elevenlabs.io",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "Suno",
@@ -87,7 +96,8 @@
     "owner": "Suno",
     "note": "Sözlü şarkı bile oluşturabilir.",
     "url": "https://suno.com",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "Runway",
@@ -96,7 +106,8 @@
     "owner": "Runway",
     "note": "Video düzenlemede güçlü.",
     "url": "https://runwayml.com",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "Pika",
@@ -105,7 +116,8 @@
     "owner": "Pika Labs",
     "note": "Hızlı klip üretimi.",
     "url": "https://pika.art",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "Notion AI",
@@ -114,7 +126,8 @@
     "owner": "Notion",
     "note": "Notion içine gömülü çalışır.",
     "url": "https://www.notion.so/product/ai",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "Otter.ai",
@@ -123,7 +136,8 @@
     "owner": "Otter.ai",
     "note": "Canlı transkripsiyon yapar.",
     "url": "https://otter.ai",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "Perplexity",
@@ -132,7 +146,8 @@
     "owner": "Perplexity AI",
     "note": "Cevapları kaynaklarıyla verir.",
     "url": "https://www.perplexity.ai",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "NotebookLM",
@@ -141,7 +156,8 @@
     "owner": "Google",
     "note": "Sadece verdiğin kaynaklara dayanır.",
     "url": "https://notebooklm.google.com",
-    "subscription": "Ücretsiz"
+    "subscription": "Ücretsiz",
+    "status": "Aktif"
   },
   {
     "name": "Cursor",
@@ -150,7 +166,8 @@
     "owner": "Anysphere",
     "note": "Kod tabanınla sohbet edebilirsin.",
     "url": "https://cursor.com",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   },
   {
     "name": "Replit",
@@ -159,6 +176,7 @@
     "owner": "Replit",
     "note": "Kurulum gerektirmez.",
     "url": "https://replit.com",
-    "subscription": "Freemium"
+    "subscription": "Freemium",
+    "status": "Aktif"
   }
 ]

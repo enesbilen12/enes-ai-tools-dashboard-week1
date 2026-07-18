@@ -13,6 +13,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Genel amaçlı, başlangıç için popüler.",
     url: "https://chat.openai.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Claude",
@@ -22,6 +23,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Uzun belgelerle çalışmada iyi.",
     url: "https://claude.ai",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Gemini",
@@ -31,6 +33,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Google araçlarını kullananlar için pratik.",
     url: "https://gemini.google.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Midjourney",
@@ -40,6 +43,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Görsel kalitesi yüksek.",
     url: "https://www.midjourney.com",
     subscription: "Ücretli",
+    status: "Aktif",
   },
   {
     name: "GitHub Copilot",
@@ -49,6 +53,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Editör içinde çalışır.",
     url: "https://github.com/features/copilot",
     subscription: "Ücretli",
+    status: "Aktif",
   },
   {
     name: "Canva",
@@ -58,6 +63,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Tasarım bilgisi gerektirmez.",
     url: "https://www.canva.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Adobe Firefly",
@@ -67,6 +73,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Adobe uygulamalarıyla entegre çalışır.",
     url: "https://firefly.adobe.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Leonardo.ai",
@@ -76,6 +83,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Ücretsiz kredilerle başlanabilir.",
     url: "https://leonardo.ai",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "ElevenLabs",
@@ -85,6 +93,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Çok dilli seslendirme desteği.",
     url: "https://elevenlabs.io",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Suno",
@@ -94,6 +103,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Sözlü şarkı bile oluşturabilir.",
     url: "https://suno.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Runway",
@@ -103,6 +113,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Video düzenlemede güçlü.",
     url: "https://runwayml.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Pika",
@@ -112,6 +123,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Hızlı klip üretimi.",
     url: "https://pika.art",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Notion AI",
@@ -121,6 +133,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Notion içine gömülü çalışır.",
     url: "https://www.notion.so/product/ai",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Otter.ai",
@@ -130,6 +143,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Canlı transkripsiyon yapar.",
     url: "https://otter.ai",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Perplexity",
@@ -139,6 +153,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Cevapları kaynaklarıyla verir.",
     url: "https://www.perplexity.ai",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "NotebookLM",
@@ -148,6 +163,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Sadece verdiğin kaynaklara dayanır.",
     url: "https://notebooklm.google.com",
     subscription: "Ücretsiz",
+    status: "Aktif",
   },
   {
     name: "Cursor",
@@ -157,6 +173,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Kod tabanınla sohbet edebilirsin.",
     url: "https://cursor.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Replit",
@@ -166,6 +183,7 @@ let VARSAYILAN_ARACLAR = [
     note: "Kurulum gerektirmez.",
     url: "https://replit.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
 ];
 
