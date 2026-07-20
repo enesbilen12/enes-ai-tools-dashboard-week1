@@ -4,6 +4,31 @@ Her gün ne yaptığımı kısaca not aldığım dosya. En yeni gün en üstte.
 
 ---
 
+## Gün 5
+
+- **Tarih:** 2026-07-20
+- **Bugünkü hedef:** JSON export butonu eklemek.
+- **İzlediğim / okuduğum kaynaklar:**
+- **Yaptığım değişiklikler:** "JSON Dışa Aktar" butonu eklendi; tıklayınca
+  mevcut araç listesi okunabilir JSON formatında (girintili) bir readonly
+  textarea içinde gösteriliyor, tekrar tıklayınca kapanıyor. localStorage/
+  silme/kaydetme fonksiyonlarına dokunulmadı (yalnız okuma).
+- **Değişen dosyalar:** index.html, app.js
+- **Claude Code'a verdiğim ana prompt:** "JSON export butonu eklemek...
+  Butona tıklanınca mevcut araç listesi okunabilir JSON formatında gösterilsin
+  (textarea veya pre alanında)... Sadece export özelliği eklensin."
+- **Test ettiklerim:** butonun açılıp kapanması, JSON'un güncel listeyi
+  yansıtması, yeni araç ekleyince JSON'un güncellenmesi.
+- **Geçen testler:** Export butonu açılıp kapanıyor; JSON güncel listeyi
+  yansıtıyor; yeni araç ekleyince JSON güncelleniyor.
+- **Kalan sorunlar:**
+- **Bugün öğrendiğim kavram:** JSON.stringify, readonly textarea, toggle
+  görünüm.
+- **Yarın yapacağım iş:** README güncelleme ve hafta sonu hazırlığı.
+- **Commit mesajı:** feat: add JSON export button
+
+---
+
 ## Gün 4
 
 - **Tarih:** 2026-07-19

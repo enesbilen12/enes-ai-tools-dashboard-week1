@@ -21,3 +21,6 @@ Durum sütununu test ederken doldur: **Geçti** / **Kaldı**.
 | **Aynı isim (harf duyarsız)** | Var olan bir aracın adını farklı harf düzeniyle gir (örn. `chatgpt`) → Ekle | "zaten var" mesajı çıkar; ChatGPT/chatgpt/CHATGPT aynı sayılır | Geçti |
 | **Geçerli kayıt** | name+category+purpose dolu, URL `https://ornek.com` → Ekle | Yeni kart listede görünür, form kapanır, localStorage'a yazılır (yenileyince kalır) | Geçti |
 | **Kısmi düzeltme** | Birden çok hatalı alan varken tek alanı düzelt → Ekle | Sadece düzeltilen alanın hatası kaybolur, kalan hatalar durur | Geçti |
+| **JSON export aç/kapa** | "📤 JSON Dışa Aktar" butonuna bas, tekrar bas | İlk basışta textarea açılır ve JSON görünür, ikinci basışta gizlenir | Geçti |
+| **JSON içeriği eşleşir** | Butona bas → çıktıyı incele | Girintili geçerli JSON; nesne sayısı listedeki araç sayısına eşit, alanlar (name/category/.../status) uyumlu | Geçti |
+| **JSON güncellenir** | Yeni araç ekle → Export'a bas | Yeni araç JSON çıktısında görünür (liste her açılışta yeniden üretilir) | Geçti |
