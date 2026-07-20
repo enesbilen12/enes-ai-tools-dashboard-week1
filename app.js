@@ -337,6 +337,7 @@ function duzenlemeFormuHTML(arac) {
           ${durumSecenekleriHTML(arac.status || "Aktif")}
         </select>
       </label>
+      <p class="duzenle-hata" style="color:#c0392b; font-size:12px; margin:4px 0"></p>
       <div class="duzenle-aksiyonlar">
         <button class="kaydet-btn" data-isim="${ad}">💾 Kaydet</button>
         <button class="iptal-btn">İptal</button>
@@ -494,7 +495,8 @@ function aracGeriYukle(isim) {
   if (!arac) return;
 
   // İsim = kimlik. Aynı adlı aktif araç varsa çakışmayı önle.
-  if (tools.some((a) => a.name === isim)) {
+  // Harf duyarsız: "ChatGPT" aktifken "chatgpt" geri yüklenemez (ekleme ile tutarlı).
+  if (tools.some((a) => a.name.toLowerCase() === isim.toLowerCase())) {
     alert(`"${isim}" adlı bir araç zaten listede. Geri yüklenemedi.`);
     return;
   }
@@ -536,9 +538,12 @@ function duzenlemeyiKaydet(eskiIsim, kartEl) {
     alanlar[girdi.dataset.alan] = girdi.value.trim();
   });
 
-  if (!alanlar.name) {
-    alert("İsim boş olamaz.");
-    return; // form modunda kal
+  // Ekleme formuyla aynı kurallar; kendi adını hariç tut (mevcutIsim = eskiIsim).
+  const hatalar = validateForm(alanlar, eskiIsim);
+  const hataEl = kartEl.querySelector(".duzenle-hata");
+  if (Object.keys(hatalar).length > 0) {
+    hataEl.textContent = Object.values(hatalar).join(" · ");
+    return; // form modunda kal, kullanıcının girdileri durur
   }
 
   // İsim değiştiyse favori kaydını da taşı (çakışmayı önle).
@@ -551,7 +556,7 @@ function duzenlemeyiKaydet(eskiIsim, kartEl) {
   arac.purpose = alanlar.purpose;
   arac.owner = alanlar.owner;
   arac.note = alanlar.note;
-  arac.url = urlDuzenle(alanlar.url || ""); // boşsa "" -> kartta buton çıkmaz
+  arac.url = alanlar.url; // validateForm protokolü garanti etti (urlDuzenle gerekmez)
   arac.subscription = alanlar.subscription || "";
   arac.status = alanlar.status || "Aktif"; // status boşsa Aktif kabul et
 
@@ -780,15 +785,21 @@ function urlDuzenle(ham) {
   return "https://" + deger.replace(/^\/+/, "");
 }
 
-// validateForm: yeni araç verisini kontrol eder, hatalı alanları döndürür.
+// validateForm: araç verisini kontrol eder, hatalı alanları döndürür.
 // Boş nesne dönerse form geçerlidir; { alan: mesaj } dönerse o alanlar hatalı.
-function validateForm(veri) {
+// mevcutIsim: düzenlemede aracın KENDİ adı; tekrar kontrolünden hariç tutulur
+// (araç kendi adıyla çakışmasın). Eklemede boş bırakılır (etkisiz).
+function validateForm(veri, mevcutIsim) {
   const hatalar = {};
 
-  // Ad: boş olamaz ve aynı adlı aktif araç bulunamaz (isim = kimlik).
+  // Ad: boş olamaz ve aynı adlı BAŞKA aktif araç bulunamaz (isim = kimlik).
   // Karşılaştırma büyük/küçük harf duyarsız: "ChatGPT" ile "chatgpt" aynı sayılır.
   if (!veri.name) hatalar.name = "Ad alanı zorunludur.";
-  else if (tools.some((a) => a.name.toLowerCase() === veri.name.toLowerCase())) {
+  else if (
+    tools.some(
+      (a) => a.name.toLowerCase() === veri.name.toLowerCase() && a.name !== mevcutIsim
+    )
+  ) {
     hatalar.name = `"${veri.name}" adlı bir araç zaten var.`;
   }
 
