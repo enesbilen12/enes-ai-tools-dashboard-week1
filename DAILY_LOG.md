@@ -4,6 +4,35 @@ Her gün ne yaptığımı kısaca not aldığım dosya. En yeni gün en üstte.
 
 ---
 
+## Gün 6
+
+- **Tarih:** 2026-07-21
+- **Bugünkü hedef:** Test matrisi hazırlama ve kod review.
+- **İzlediğim / okuduğum kaynaklar:**
+- **Yaptığım değişiklikler:** TEST_CHECKLIST.md, 15 özellik başlığı altında 35
+  test satırına genişletildi (özellik bazlı matris). Kod review yapıldı ve
+  çıkan 3 kritik bulgu düzeltildi: düzenleme formunda tekrar-isim kontrolü
+  (harf duyarsız, kendi adını hariç tutar); geri yüklemede harf duyarsız
+  çakışma kontrolü; düzenleme formuna tam doğrulama (kategori/amaç/URL +
+  protokol, inline hata).
+- **Değişen dosyalar:** TEST_CHECKLIST.md, app.js
+- **Claude Code'a verdiğim ana prompt:** "Test matrisi hazırlamak ve kod review
+  yapmak... Kodu review et ve riskli veya iyileştirilebilir yerleri listele."
+- **Test ettiklerim:** düzenlemede aynı isim, geri yükleme harf duyarsızlığı,
+  düzenleme formu doğrulaması, ekleme formunda regresyon.
+- **Geçen testler:** düzenleme formunda aynı isim engellendi; geri yüklemede
+  harf duyarsız kontrol çalışıyor; düzenleme formu doğrulaması çalışıyor;
+  ekleme formu davranışı değişmedi.
+- **Kalan sorunlar:** urlDuzenle artık ölü kod (çağrılmıyor); review'daki
+  iyileştirme bulguları duruyor (favoriMi tekrar tekrar localStorage okuyor;
+  favorileriKaydet'te try/catch yok; iki seçenek-üretici birleştirilebilir).
+- **Bugün öğrendiğim kavram:** kod review, XSS güvenliği, DRY prensibi.
+- **Yarın yapacağım iş:** PR açma, README güncelleme, hafta sonu review
+  hazırlığı.
+- **Commit mesajı:** fix: add duplicate name check in edit form
+
+---
+
 ## Gün 5
 
 - **Tarih:** 2026-07-20
