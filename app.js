@@ -739,6 +739,22 @@ silinenListesi.addEventListener("click", function (olay) {
 
 renderSilinenler(); // açılışta menüyü doğru sayı/liste ile çiz
 
+// --- JSON DIŞA AKTARMA ---
+
+const exportBtn = document.querySelector("#export-btn");
+const exportCikti = document.querySelector("#export-cikti");
+
+// Butona basınca mevcut araç listesini okunabilir JSON olarak göster/gizle.
+// JSON.stringify'ın 3. argümanı (2) girinti sayısıdır -> okunabilir çıktı.
+exportBtn.addEventListener("click", function () {
+  if (exportCikti.hidden) {
+    exportCikti.value = JSON.stringify(tools, null, 2); // her açılışta güncel liste
+    exportCikti.hidden = false;
+  } else {
+    exportCikti.hidden = true;
+  }
+});
+
 // --- YENİ ARAÇ EKLEME FORMU ---
 
 const ekleAcBtn = document.querySelector("#ekle-ac-btn");
