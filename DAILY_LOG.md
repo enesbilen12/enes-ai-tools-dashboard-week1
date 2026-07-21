@@ -4,6 +4,58 @@ Her gün ne yaptığımı kısaca not aldığım dosya. En yeni gün en üstte.
 
 ---
 
+## 📦 Haftalık Özet (2. Hafta)
+
+Bu hafta panele eklenen ve iyileştirilen işler:
+
+- **`data.json` + `fetch`** — başlangıç verisi koddan ayrıldı, `fetch` ile
+  yükleniyor (hata olursa gömülü yedek liste).
+- **Durum (status) filtresi ve alanı** — Aktif / Deneme / Pasif; filtre, form
+  alanı ve kart rozeti + "Filtreleri Temizle" reset butonu.
+- **Inline form doğrulama** — `validateForm()`, zorunlu alanlar, URL protokol
+  kontrolü, harf duyarsız tekrar kontrolü, `alert()` yerine kırmızı mesaj.
+- **JSON dışa aktarma** — mevcut listeyi okunabilir JSON olarak gösterme.
+- **Kod review ve temizlik** — 3 kritik bulgu düzeltildi (isim = kimlik +
+  düzenleme doğrulaması); ölü kod (`urlDuzenle`) silindi, `favorileriKaydet`'e
+  try/catch eklendi; test matrisi (15 özellik / 39 satır) hazırlandı.
+
+**Commit sayısı:** dalda 17 commit (6 feat, 2 fix, 8 docs, 1 chore).
+
+**Öğrenilen kavramlar:** async/await, `fetch`, try/catch, `validateForm`,
+inline hata mesajları, regex ile URL doğrulama, `JSON.stringify` export,
+özellik bazlı test matrisi, kod review / DRY, PR hazırlığı.
+
+---
+
+## Gün 7
+
+- **Tarih:** 2026-07-21
+- **Bugünkü hedef:** 2. hafta teslim paketi — dokümantasyon güncelleme ve kod
+  temizliği.
+- **İzlediğim / okuduğum kaynaklar:**
+- **Yaptığım değişiklikler:** İnceleme raporu hazırlandı (README/checklist
+  eksikleri, riskli kod, PR taslağı). README.md ve TEST_CHECKLIST.md 2. haftaya
+  göre güncellendi. Ölü kod `urlDuzenle` silindi; `favorileriKaydet`'e try/catch
+  eklendi (diğer kaydetme fonksiyonlarıyla tutarlı).
+- **Değişen dosyalar:** README.md, TEST_CHECKLIST.md, app.js
+- **Claude Code'a verdiğim ana prompt:** "2. hafta teslim paketi hazırlamak...
+  README/TEST_CHECKLIST eksiklerini bul, kodda riskli/gereksiz yerleri listele,
+  PR açıklaması taslağı oluştur. Önce inceleme raporu ver."
+- **Test ettiklerim:** kod temizliği sonrası regresyon (ekleme/düzenleme/geri
+  yükleme), sözdizimi.
+- **Geçen testler:** regresyon testi 14/14 geçti; `urlDuzenle` silindikten
+  sonra davranış değişmedi; console temiz.
+- **Kalan sorunlar:** PR henüz açılmadı; küçük iyileştirmeler duruyor (favoriMi
+  optimizasyonu, iki seçenek-üreticinin DRY birleşmesi, aracGeriYukle'deki son
+  alert).
+- **Bugün öğrendiğim kavram:** kod review, ölü kod temizliği, teslim/PR
+  hazırlığı.
+- **Yarın yapacağım iş:** PR açma ve son gözden geçirme.
+- **Commit mesajları:** docs: update README and TEST_CHECKLIST for week 2
+  delivery · fix: remove dead urlDuzenle and add try/catch to favorileriKaydet
+
+---
+
 ## Gün 6
 
 - **Tarih:** 2026-07-21
