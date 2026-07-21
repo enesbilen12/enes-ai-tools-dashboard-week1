@@ -442,7 +442,11 @@ function favorileriYukle() {
 }
 
 function favorileriKaydet(liste) {
-  localStorage.setItem(FAVORI_ANAHTARI, JSON.stringify(liste));
+  try {
+    localStorage.setItem(FAVORI_ANAHTARI, JSON.stringify(liste));
+  } catch (hata) {
+    console.warn("Favoriler kaydedilemedi:", hata);
+  }
 }
 
 function favoriMi(isim) {
@@ -556,7 +560,7 @@ function duzenlemeyiKaydet(eskiIsim, kartEl) {
   arac.purpose = alanlar.purpose;
   arac.owner = alanlar.owner;
   arac.note = alanlar.note;
-  arac.url = alanlar.url; // validateForm protokolü garanti etti (urlDuzenle gerekmez)
+  arac.url = alanlar.url; // validateForm http/https protokolünü garanti etti
   arac.subscription = alanlar.subscription || "";
   arac.status = alanlar.status || "Aktif"; // status boşsa Aktif kabul et
 
@@ -773,17 +777,6 @@ const ekleNote = document.querySelector("#ekle-note");
 const ekleUrl = document.querySelector("#ekle-url");
 const ekleSubscription = document.querySelector("#ekle-subscription");
 const ekleDurum = document.querySelector("#ekle-durum");
-
-// urlDuzenle: kullanıcının girdiği adresi güvenli/temiz hale getirir.
-// - Boşsa "" döner (kartta buton hiç çıkmaz).
-// - Protokol yoksa başına https:// ekler (kullanıcı dostu).
-// - Yalnızca http/https'e izin verir; "javascript:" gibi şemalar etkisizleşir.
-function urlDuzenle(ham) {
-  const deger = ham.trim();
-  if (!deger) return "";
-  if (/^https?:\/\//i.test(deger)) return deger;
-  return "https://" + deger.replace(/^\/+/, "");
-}
 
 // validateForm: araç verisini kontrol eder, hatalı alanları döndürür.
 // Boş nesne dönerse form geçerlidir; { alan: mesaj } dönerse o alanlar hatalı.
