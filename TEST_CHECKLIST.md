@@ -21,6 +21,7 @@
 | Test adı | Adımlar | Beklenen sonuç | Durum |
 |----------|---------|----------------|-------|
 | **Kart render** | Sayfayı aç | Her araç için kart: ad, kategori, açıklama, geliştiren, not, rozetler | |
+| **Siteye Git** | URL'si olan bir kartta "🔗 Siteye Git"e tıkla | Aracın sitesi yeni sekmede açılır (`rel="noopener noreferrer"`) | |
 | **Özet kutuları** | Sayfayı aç / favori ekle | "Toplam Araç" aktif araç sayısını, "Favoriler" yıldızlı sayısını doğru gösterir | |
 | **Boş sonuç** | Hiçbir araca uymayan arama yaz | "Araç bulunamadı." mesajı görünür | |
 
@@ -44,6 +45,7 @@
 |----------|---------|----------------|-------|
 | **Durum = Aktif** | Durum menüsünden "Aktif" seç | Tüm araçlar görünür (status'ü olmayan araç Aktif sayılır) | Geçti |
 | **Durum = Deneme/Pasif** | "Deneme" veya "Pasif" seç | Sadece o duruma sahip araçlar görünür (hiç yoksa liste boşalır) | Geçti |
+| **Birleşik filtre** | Aynı anda arama + kategori + durum seç | Üç koşulu birden sağlayan araçlar görünür (VE mantığı) | |
 
 ### 6. Filtreleri temizle (Reset)
 
@@ -68,6 +70,8 @@
 | **Düzenlemeye başla** | Bir kartta "✏️ Düzenle" | Kart form moduna geçer, alanlar mevcut değerlerle dolu | |
 | **Kaydet** | Alanları + abonelik + durum değiştir → "💾 Kaydet" | Kart güncellenir, değişiklik yenilemede kalıcı | |
 | **İptal** | Düzenlemede "İptal" | Değişiklik kaydedilmez, kart eski haline döner | |
+| **Düzenlemede aynı isim** | Düzenlerken adı başka bir aracın adıyla (harf farkıyla dahil) aynı yap → Kaydet | Form altında kırmızı "zaten var" mesajı, kayıt olmaz; kendi adını korumak sorunsuz | |
+| **Düzenlemede geçersiz alan** | Kategori/amaç'ı sil veya URL'yi protokolsüz yap → Kaydet | İlgili hata(lar) form altında ` · ` ile gösterilir, kayıt olmaz | |
 
 ### 9. Silme & çöp kutusu
 

@@ -7,7 +7,7 @@ düzenleyebilir/silebilir, silinenleri geri yükleyebilir ve açık/koyu tema
 arasında geçiş yapabilir.
 
 Saf **HTML + CSS + JavaScript** ile yazılmıştır; hiçbir kütüphane/paket
-gerektirmez. Yazılım eğitimi 1. hafta projesi.
+gerektirmez. Yazılım eğitimi 2. hafta projesi.
 
 ## 🔗 Canlı demo
 
@@ -21,18 +21,35 @@ gerektirmez. Yazılım eğitimi 1. hafta projesi.
 
 Bu hafta panele eklemeyi planladığım özellikler:
 
-- [ ] **`data.json` ile `fetch`** — başlangıç araç verisini koddan ayırıp
+- [x] **`data.json` ile `fetch`** — başlangıç araç verisini koddan ayırıp
   `data.json` dosyasından `fetch` ile yükleme (fetch başarısızsa gömülü yedek liste).
-- [ ] **Inline form validation** — `alert()` yerine form içinde kırmızı hata satırı.
-- [ ] **JSON export özelliği** — mevcut araç listesini `.json` olarak dışa aktarma.
-- [ ] **README ve test checklist güncelleme** — belgeleri 2. haftaya taşıma.
+- [x] **Inline form validation** — `alert()` yerine form içinde kırmızı hata satırı.
+- [x] **JSON export özelliği** — mevcut araç listesini `.json` olarak dışa aktarma.
+- [x] **README ve test checklist güncelleme** — belgeleri 2. haftaya taşıma.
+
+Bu haftaya ek olarak eklenen özellikler:
+
+- [x] **Durum filtresi ve alanı** — araçlara Aktif / Deneme / Pasif durumu; durum
+  menüsünden filtreleme ve kartta rozet.
+- [x] **Filtreleri Temizle (reset)** — arama + kategori + durum filtrelerini tek
+  tıkla sıfırlama.
 
 ## ✨ Özellikler
 
-- **Veriden kart üretimi** — Araçlar JavaScript'teki bir listeden okunur ve
-  otomatik olarak kart halinde çizilir.
+- **Veriden kart üretimi** — Araçlar `data.json` dosyasından `fetch` ile okunur
+  (dosya erişilemezse gömülü yedek liste devreye girer) ve otomatik olarak kart
+  halinde çizilir.
 - **Arama** — İsim, kategori ve açıklama içinde canlı arama (yazdıkça süzülür).
 - **Kategori filtresi** — Açılır menüden kategoriye göre filtreleme.
+- **Durum filtresi** — Araçları Aktif / Deneme / Pasif durumuna göre süzme;
+  durum kartta rozet olarak da görünür.
+- **Filtreleri Temizle** — Arama, kategori ve durum filtrelerini tek tıkla
+  sıfırlama.
+- **Inline form doğrulama** — Araç ekleme/düzenlemede zorunlu alan ve URL
+  protokol (`http://`/`https://`) kontrolü; hatalar `alert()` yerine form içinde
+  kırmızı mesajla gösterilir. Aynı isim (büyük/küçük harf duyarsız) engellenir.
+- **JSON dışa aktarma** — Mevcut araç listesini okunabilir JSON olarak (readonly
+  textarea) görüntüleme.
 - **Favoriler** — Yıldıza tıklayarak favori ekle/çıkar; favoriler
   `localStorage`'da saklanır, sayfa yenilenince korunur.
 - **Düzenle / Sil** — Her kart, kart içi formla düzenlenebilir veya silinebilir;
@@ -54,10 +71,12 @@ Kurulum gerektirmez. İki yol var:
 **1) Hızlı yol — çift tıklama**
 1. `index.html` dosyasına çift tıkla; varsayılan tarayıcında açılır.
 
-> ⚠️ **Uyarı:** Bu yöntemde sayfa `file://` adresinden açılır. Bazı tarayıcılar
-> `file://` kökeninde `localStorage`'ı kısıtladığı için **favoriler
-> kaydolmayabilir veya sayfa yenilenince kaybolabilir.** Favori özelliğini
-> tam kullanmak için aşağıdaki Live Server yöntemini tercih et.
+> ⚠️ **Uyarı:** Bu yöntemde sayfa `file://` adresinden açılır. Bu durumda iki
+> kısıt vardır: (1) tarayıcı `data.json`'ı `fetch` ile yükleyemez, bu yüzden
+> araçlar **koda gömülü yedek listeden** gelir; (2) bazı tarayıcılar `file://`
+> kökeninde `localStorage`'ı kısıtladığı için **favoriler kaydolmayabilir veya
+> sayfa yenilenince kaybolabilir.** Tam işlevsellik için aşağıdaki Live Server
+> yöntemini tercih et.
 
 **2) Önerilen yol — Live Server (VS Code)**
 1. VS Code'da **Live Server** eklentisini kur.
@@ -91,11 +110,15 @@ Kurulum gerektirmez. İki yol var:
 - [x] Açık / koyu tema (localStorage'da saklanır)
 - [x] Araç düzenleme ve silme (kalıcı, XSS-güvenli)
 - [x] Silinen araçlar menüsü ve geri yükleme
+- [x] `data.json` + `fetch` ile veri yükleme (gömülü yedek)
+- [x] Durum filtresi ve alanı (Aktif / Deneme / Pasif) + kart rozeti
+- [x] Filtreleri Temizle (reset) butonu
+- [x] Inline form doğrulama (zorunlu alan + URL protokol + harf duyarsız tekrar)
+- [x] JSON dışa aktarma
 
 ## 🔭 İleride (fikirler)
 
 - [ ] "Sadece favorileri göster" filtresi
-- [ ] Her kartı aracın web sitesine götüren bağlantı
 - [ ] Panel dışına tıklayınca "Silinen Araçlar" menüsünü kapatma
 - [ ] Basit birim testleri (örn. filtre mantığı)
 
