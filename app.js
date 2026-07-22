@@ -1,8 +1,10 @@
 // app.js: Sayfanın davranışı (veri, çizim, arama, favoriler, düzenle/sil, tema).
 
-// VARSAYILAN_ARACLAR: ilk açılışta kullanılacak hazır liste.
-// Kullanıcı silme/düzenleme yaparsa çalışan liste localStorage'da tutulur.
-const VARSAYILAN_ARACLAR = [
+// VARSAYILAN_ARACLAR: GÖMÜLÜ YEDEK liste.
+// Normalde başlangıç verisi data.json'dan fetch ile gelir (bkz. baslat()).
+// fetch başarısız olursa (örn. çift-tıkla file:// açılışı) bu liste devreye girer.
+// `let`: fetch başarılıysa üzerine data.json'daki liste yazılır.
+let VARSAYILAN_ARACLAR = [
   {
     name: "ChatGPT",
     category: "Metin",
@@ -11,6 +13,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Genel amaçlı, başlangıç için popüler.",
     url: "https://chat.openai.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Claude",
@@ -20,6 +23,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Uzun belgelerle çalışmada iyi.",
     url: "https://claude.ai",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Gemini",
@@ -29,6 +33,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Google araçlarını kullananlar için pratik.",
     url: "https://gemini.google.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Midjourney",
@@ -38,6 +43,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Görsel kalitesi yüksek.",
     url: "https://www.midjourney.com",
     subscription: "Ücretli",
+    status: "Aktif",
   },
   {
     name: "GitHub Copilot",
@@ -47,6 +53,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Editör içinde çalışır.",
     url: "https://github.com/features/copilot",
     subscription: "Ücretli",
+    status: "Aktif",
   },
   {
     name: "Canva",
@@ -56,6 +63,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Tasarım bilgisi gerektirmez.",
     url: "https://www.canva.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Adobe Firefly",
@@ -65,6 +73,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Adobe uygulamalarıyla entegre çalışır.",
     url: "https://firefly.adobe.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Leonardo.ai",
@@ -74,6 +83,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Ücretsiz kredilerle başlanabilir.",
     url: "https://leonardo.ai",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "ElevenLabs",
@@ -83,6 +93,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Çok dilli seslendirme desteği.",
     url: "https://elevenlabs.io",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Suno",
@@ -92,6 +103,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Sözlü şarkı bile oluşturabilir.",
     url: "https://suno.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Runway",
@@ -101,6 +113,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Video düzenlemede güçlü.",
     url: "https://runwayml.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Pika",
@@ -110,6 +123,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Hızlı klip üretimi.",
     url: "https://pika.art",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Notion AI",
@@ -119,6 +133,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Notion içine gömülü çalışır.",
     url: "https://www.notion.so/product/ai",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Otter.ai",
@@ -128,6 +143,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Canlı transkripsiyon yapar.",
     url: "https://otter.ai",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Perplexity",
@@ -137,6 +153,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Cevapları kaynaklarıyla verir.",
     url: "https://www.perplexity.ai",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "NotebookLM",
@@ -146,6 +163,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Sadece verdiğin kaynaklara dayanır.",
     url: "https://notebooklm.google.com",
     subscription: "Ücretsiz",
+    status: "Aktif",
   },
   {
     name: "Cursor",
@@ -155,6 +173,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Kod tabanınla sohbet edebilirsin.",
     url: "https://cursor.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
   {
     name: "Replit",
@@ -164,6 +183,7 @@ const VARSAYILAN_ARACLAR = [
     note: "Kurulum gerektirmez.",
     url: "https://replit.com",
     subscription: "Freemium",
+    status: "Aktif",
   },
 ];
 
@@ -247,8 +267,9 @@ function silinenleriKaydet() {
 // silinenAraclar'ı ÖNCE yükle: araclariYukle() birleştirme yaparken
 // "bu araç silinmiş mi?" kontrolü için bu listeye ihtiyaç duyar.
 let silinenAraclar = silinenleriYukle();
-// tools: sabit varsayılanlar + kullanıcının eklemeleri birleştirilerek yüklenir.
-let tools = araclariYukle();
+// tools: başlangıçta boş; asıl veri dosyanın sonundaki baslat() içinde
+// (localStorage veya data.json'dan) yüklenir.
+let tools = [];
 let duzenlenenArac = null;
 
 // guvenliMetin: HTML özel karakterlerini kaçırır. Kullanıcı artık araç
@@ -268,6 +289,17 @@ function abonelikSecenekleriHTML(secili) {
     .map(
       (tip) =>
         `<option value="${tip}"${tip === secili ? " selected" : ""}>${tip}</option>`
+    )
+    .join("");
+}
+
+// durumSecenekleriHTML: durum dropdown'ı için <option>'lar üretir.
+// abonelikSecenekleriHTML ile aynı mantık; liste Aktif/Deneme/Pasif.
+function durumSecenekleriHTML(secili) {
+  return ["Aktif", "Deneme", "Pasif"]
+    .map(
+      (durum) =>
+        `<option value="${durum}"${durum === secili ? " selected" : ""}>${durum}</option>`
     )
     .join("");
 }
@@ -300,6 +332,12 @@ function duzenlemeFormuHTML(arac) {
           ${abonelikSecenekleriHTML(arac.subscription)}
         </select>
       </label>
+      <label>Durum
+        <select class="duzenle-alan" data-alan="status">
+          ${durumSecenekleriHTML(arac.status || "Aktif")}
+        </select>
+      </label>
+      <p class="duzenle-hata" style="color:#c0392b; font-size:12px; margin:4px 0"></p>
       <div class="duzenle-aksiyonlar">
         <button class="kaydet-btn" data-isim="${ad}">💾 Kaydet</button>
         <button class="iptal-btn">İptal</button>
@@ -336,11 +374,15 @@ function kartOlustur(arac) {
     ? `<span class="abonelik">${guvenliMetin(arac.subscription)}</span>`
     : "";
 
+  // Durum rozeti: status yoksa "Aktif" varsayılır (eski kullanıcı araçları için).
+  const durumRozeti = `<span class="abonelik">${guvenliMetin(arac.status || "Aktif")}</span>`;
+
   kart.innerHTML = `
     <button class="favori-btn${aktifSinif}" data-isim="${ad}"
             title="Favori" aria-label="Favorilere ekle veya çıkar">${yildiz}</button>
     <h2>${ad}</h2>
     ${abonelikRozeti}
+    ${durumRozeti}
     <p><strong>Kategori:</strong> ${guvenliMetin(arac.category)}</p>
     <p>${guvenliMetin(arac.purpose)}</p>
     <p><strong>Geliştiren:</strong> ${guvenliMetin(arac.owner)}</p>
@@ -400,7 +442,11 @@ function favorileriYukle() {
 }
 
 function favorileriKaydet(liste) {
-  localStorage.setItem(FAVORI_ANAHTARI, JSON.stringify(liste));
+  try {
+    localStorage.setItem(FAVORI_ANAHTARI, JSON.stringify(liste));
+  } catch (hata) {
+    console.warn("Favoriler kaydedilemedi:", hata);
+  }
 }
 
 function favoriMi(isim) {
@@ -453,7 +499,8 @@ function aracGeriYukle(isim) {
   if (!arac) return;
 
   // İsim = kimlik. Aynı adlı aktif araç varsa çakışmayı önle.
-  if (tools.some((a) => a.name === isim)) {
+  // Harf duyarsız: "ChatGPT" aktifken "chatgpt" geri yüklenemez (ekleme ile tutarlı).
+  if (tools.some((a) => a.name.toLowerCase() === isim.toLowerCase())) {
     alert(`"${isim}" adlı bir araç zaten listede. Geri yüklenemedi.`);
     return;
   }
@@ -495,9 +542,12 @@ function duzenlemeyiKaydet(eskiIsim, kartEl) {
     alanlar[girdi.dataset.alan] = girdi.value.trim();
   });
 
-  if (!alanlar.name) {
-    alert("İsim boş olamaz.");
-    return; // form modunda kal
+  // Ekleme formuyla aynı kurallar; kendi adını hariç tut (mevcutIsim = eskiIsim).
+  const hatalar = validateForm(alanlar, eskiIsim);
+  const hataEl = kartEl.querySelector(".duzenle-hata");
+  if (Object.keys(hatalar).length > 0) {
+    hataEl.textContent = Object.values(hatalar).join(" · ");
+    return; // form modunda kal, kullanıcının girdileri durur
   }
 
   // İsim değiştiyse favori kaydını da taşı (çakışmayı önle).
@@ -510,8 +560,9 @@ function duzenlemeyiKaydet(eskiIsim, kartEl) {
   arac.purpose = alanlar.purpose;
   arac.owner = alanlar.owner;
   arac.note = alanlar.note;
-  arac.url = urlDuzenle(alanlar.url || ""); // boşsa "" -> kartta buton çıkmaz
+  arac.url = alanlar.url; // validateForm http/https protokolünü garanti etti
   arac.subscription = alanlar.subscription || "";
+  arac.status = alanlar.status || "Aktif"; // status boşsa Aktif kabul et
 
   duzenlenenArac = null;
   araclariKaydet();
@@ -557,13 +608,14 @@ document.querySelector("main").addEventListener("click", function (olay) {
   }
 });
 
-// Sayfa açılınca kartları çiz.
-renderTools();
+// Not: ilk çizim, dosyanın sonundaki baslat() içinde (veri yüklendikten sonra) yapılır.
 
 // --- ARAMA / FİLTRELEME ---
 
 const aramaKutusu = document.querySelector("#arama");
 const kategoriKutusu = document.querySelector("#kategori");
+const durumKutusu = document.querySelector("#durum");
+const sifirlaBtn = document.querySelector("#filtre-sifirla-btn");
 
 // Kategori seçeneklerini veriden üret; mevcut seçimi mümkünse koru.
 function kategorileriDoldur() {
@@ -583,8 +635,8 @@ function kategorileriDoldur() {
   if (halaVar) kategoriKutusu.value = oncekiSecim;
 }
 
-// aracFiltreyeUyuyor: araç hem arama metnine HEM seçili kategoriye uyuyor mu?
-function aracFiltreyeUyuyor(arac, aramaMetni, secilenKategori) {
+// aracFiltreyeUyuyor: araç arama metnine, kategoriye VE duruma birden uyuyor mu?
+function aracFiltreyeUyuyor(arac, aramaMetni, secilenKategori, secilenDurum) {
   const aranabilirMetin = (
     arac.name + " " + arac.category + " " + arac.purpose
   ).toLowerCase();
@@ -592,24 +644,38 @@ function aracFiltreyeUyuyor(arac, aramaMetni, secilenKategori) {
   const metinUyuyor = aranabilirMetin.includes(aramaMetni);
   const kategoriUyuyor =
     secilenKategori === "all" || arac.category === secilenKategori;
-  return metinUyuyor && kategoriUyuyor;
+  // status alanı olmayan araçları "Aktif" kabul et.
+  const aracDurumu = arac.status || "Aktif";
+  const durumUyuyor = secilenDurum === "all" || aracDurumu === secilenDurum;
+  return metinUyuyor && kategoriUyuyor && durumUyuyor;
 }
 
 // applyFilters: kullanıcının girdilerini okur, listeyi süzer ve çizer.
 function applyFilters() {
   const aramaMetni = aramaKutusu.value.toLowerCase();
   const secilenKategori = kategoriKutusu.value;
+  const secilenDurum = durumKutusu.value;
 
   const filtrelenmisAraclar = tools.filter(function (arac) {
-    return aracFiltreyeUyuyor(arac, aramaMetni, secilenKategori);
+    return aracFiltreyeUyuyor(arac, aramaMetni, secilenKategori, secilenDurum);
   });
 
   renderTools(filtrelenmisAraclar);
 }
 
-kategorileriDoldur();
+// Not: kategorileriDoldur() ilk kez baslat() içinde çağrılır (veri gelince).
 aramaKutusu.addEventListener("input", applyFilters);
 kategoriKutusu.addEventListener("change", applyFilters);
+durumKutusu.addEventListener("change", applyFilters);
+
+// Reset: üç filtreyi de varsayılana döndür, sonra listeyi yeniden çiz.
+function filtreleriSifirla() {
+  aramaKutusu.value = "";
+  kategoriKutusu.value = "all";
+  durumKutusu.value = "all";
+  applyFilters();
+}
+sifirlaBtn.addEventListener("click", filtreleriSifirla);
 
 // --- TEMA (açık / koyu) ---
 
@@ -682,6 +748,22 @@ silinenListesi.addEventListener("click", function (olay) {
 
 renderSilinenler(); // açılışta menüyü doğru sayı/liste ile çiz
 
+// --- JSON DIŞA AKTARMA ---
+
+const exportBtn = document.querySelector("#export-btn");
+const exportCikti = document.querySelector("#export-cikti");
+
+// Butona basınca mevcut araç listesini okunabilir JSON olarak göster/gizle.
+// JSON.stringify'ın 3. argümanı (2) girinti sayısıdır -> okunabilir çıktı.
+exportBtn.addEventListener("click", function () {
+  if (exportCikti.hidden) {
+    exportCikti.value = JSON.stringify(tools, null, 2); // her açılışta güncel liste
+    exportCikti.hidden = false;
+  } else {
+    exportCikti.hidden = true;
+  }
+});
+
 // --- YENİ ARAÇ EKLEME FORMU ---
 
 const ekleAcBtn = document.querySelector("#ekle-ac-btn");
@@ -694,16 +776,45 @@ const ekleOwner = document.querySelector("#ekle-owner");
 const ekleNote = document.querySelector("#ekle-note");
 const ekleUrl = document.querySelector("#ekle-url");
 const ekleSubscription = document.querySelector("#ekle-subscription");
+const ekleDurum = document.querySelector("#ekle-durum");
 
-// urlDuzenle: kullanıcının girdiği adresi güvenli/temiz hale getirir.
-// - Boşsa "" döner (kartta buton hiç çıkmaz).
-// - Protokol yoksa başına https:// ekler (kullanıcı dostu).
-// - Yalnızca http/https'e izin verir; "javascript:" gibi şemalar etkisizleşir.
-function urlDuzenle(ham) {
-  const deger = ham.trim();
-  if (!deger) return "";
-  if (/^https?:\/\//i.test(deger)) return deger;
-  return "https://" + deger.replace(/^\/+/, "");
+// validateForm: araç verisini kontrol eder, hatalı alanları döndürür.
+// Boş nesne dönerse form geçerlidir; { alan: mesaj } dönerse o alanlar hatalı.
+// mevcutIsim: düzenlemede aracın KENDİ adı; tekrar kontrolünden hariç tutulur
+// (araç kendi adıyla çakışmasın). Eklemede boş bırakılır (etkisiz).
+function validateForm(veri, mevcutIsim) {
+  const hatalar = {};
+
+  // Ad: boş olamaz ve aynı adlı BAŞKA aktif araç bulunamaz (isim = kimlik).
+  // Karşılaştırma büyük/küçük harf duyarsız: "ChatGPT" ile "chatgpt" aynı sayılır.
+  if (!veri.name) hatalar.name = "Ad alanı zorunludur.";
+  else if (
+    tools.some(
+      (a) => a.name.toLowerCase() === veri.name.toLowerCase() && a.name !== mevcutIsim
+    )
+  ) {
+    hatalar.name = `"${veri.name}" adlı bir araç zaten var.`;
+  }
+
+  // Kategori ve amaç: boş geçilemez.
+  if (!veri.category) hatalar.category = "Kategori alanı zorunludur.";
+  if (!veri.purpose) hatalar.purpose = "Kullanım amacı zorunludur.";
+
+  // URL: zorunlu ve http:// veya https:// ile başlamalı.
+  if (!veri.url) hatalar.url = "URL alanı zorunludur.";
+  else if (!/^https?:\/\//i.test(veri.url)) {
+    hatalar.url = "URL http:// veya https:// ile başlamalı.";
+  }
+
+  return hatalar;
+}
+
+// hatalariGoster: hata mesajlarını ilgili alanların altına yazar.
+// Önce hepsini temizler, sonra sadece dolu olanları gösterir.
+function hatalariGoster(hatalar) {
+  ["name", "category", "purpose", "url"].forEach((alan) => {
+    document.querySelector("#hata-" + alan).textContent = hatalar[alan] || "";
+  });
 }
 
 // Aç/kapa: butona basınca form görünür/gizlenir.
@@ -711,9 +822,10 @@ ekleAcBtn.addEventListener("click", function () {
   ekleForm.classList.toggle("gizli");
 });
 
-// İptal: formu temizle ve gizle.
+// İptal: formu temizle, hata mesajlarını sil ve gizle.
 ekleIptalBtn.addEventListener("click", function () {
   ekleForm.reset();
+  hatalariGoster({}); // eski hatalar kalmasın
   ekleForm.classList.add("gizli");
 });
 
@@ -723,29 +835,53 @@ ekleForm.addEventListener("submit", function (olay) {
 
   const yeniArac = {
     name: ekleName.value.trim(),
-    category: ekleCategory.value.trim() || "Diğer", // boşsa "Diğer"
+    category: ekleCategory.value.trim(), // zorunlu, varsayılan yok
     purpose: eklePurpose.value.trim(),
     owner: ekleOwner.value.trim(),
     note: ekleNote.value.trim(),
-    url: urlDuzenle(ekleUrl.value), // boşsa "" -> kartta "Siteye Git" çıkmaz
+    url: ekleUrl.value.trim(), // doğrulanacak; protokolü kullanıcı yazar
     subscription: ekleSubscription.value, // dropdown -> her zaman bir değer var
+    status: ekleDurum.value, // dropdown -> varsayılan "Aktif"
   };
 
-  // Ad zorunlu.
-  if (!yeniArac.name) {
-    alert("Ad alanı zorunludur.");
-    return;
-  }
-  // İsim = kimlik: aynı adlı aktif araç olmamalı.
-  if (tools.some((a) => a.name === yeniArac.name)) {
-    alert(`"${yeniArac.name}" adlı bir araç zaten var.`);
-    return;
-  }
+  // Doğrula: hata varsa mesajları göster ve ekleme yapma.
+  const hatalar = validateForm(yeniArac);
+  hatalariGoster(hatalar);
+  if (Object.keys(hatalar).length > 0) return;
 
   tools.push(yeniArac);
   araclariKaydet();
   kategorileriDoldur(); // yeni kategori menüye yansısın
   ekleForm.reset();
+  hatalariGoster({}); // başarılı ekleme sonrası mesajları temizle
   ekleForm.classList.add("gizli");
   applyFilters(); // listeyi yeniden çiz
 });
+
+// --- BAŞLATMA ---
+
+// Sayfa açılışında bir kez çalışır: veriyi hazırlar, sonra ekranı çizer.
+async function baslat() {
+  try {
+    const yanit = await fetch("data.json");
+    if (!yanit.ok) throw new Error(`data.json okunamadı (HTTP ${yanit.status})`);
+
+    const veri = await yanit.json();
+    // Boş/bozuk dosya gömülü yedeği ezmesin diye dolu dizi şartı arıyoruz.
+    if (Array.isArray(veri) && veri.length > 0) {
+      VARSAYILAN_ARACLAR = veri;
+    }
+  } catch (hata) {
+    // Tipik sebep: dosyaya çift tıklayıp file:// ile açmak (tarayıcı engeller).
+    // Sorun değil: gömülü VARSAYILAN_ARACLAR yedeği olduğu gibi kalır.
+    console.warn("data.json alınamadı, gömülü liste kullanılıyor:", hata);
+  }
+
+  // Doğrudan atama yapmıyoruz: araclariYukle() varsayılanları localStorage'daki
+  // kullanıcı verisiyle birleştirir ve silinenleri eler.
+  tools = araclariYukle();
+  kategorileriDoldur();
+  applyFilters(); // ilk çizim
+}
+
+baslat();

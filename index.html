@@ -40,6 +40,16 @@
     />
     <!-- Kategori menüsü boş; seçenekleri app.js verisinden dolduracak. -->
     <select id="kategori" class="arama-kutusu"></select>
+    <!-- Durum menüsü: sabit liste olduğu için seçenekler doğrudan burada. -->
+    <select id="durum" class="arama-kutusu">
+      <option value="all">Tüm durumlar</option>
+      <option value="Aktif">Aktif</option>
+      <option value="Deneme">Deneme</option>
+      <option value="Pasif">Pasif</option>
+    </select>
+    <button id="filtre-sifirla-btn" class="arama-kutusu" type="button">
+      Filtreleri Temizle
+    </button>
   </section>
 
   <!-- Yeni araç ekleme: buton formu açar/kapatır, form app.js'e bağlıdır. -->
@@ -47,21 +57,38 @@
     <button id="ekle-ac-btn" class="ekle-ac-btn">➕ Yeni Araç Ekle</button>
     <form id="ekle-form" class="ekle-form gizli">
       <input id="ekle-name" class="ekle-alan" placeholder="Ad (zorunlu)" />
-      <input id="ekle-category" class="ekle-alan" placeholder="Kategori" />
-      <input id="ekle-purpose" class="ekle-alan" placeholder="Kullanım amacı" />
+      <p id="hata-name" class="hata-mesaji" style="color:#c0392b; font-size:12px; margin:0"></p>
+      <input id="ekle-category" class="ekle-alan" placeholder="Kategori (zorunlu)" />
+      <p id="hata-category" class="hata-mesaji" style="color:#c0392b; font-size:12px; margin:0"></p>
+      <input id="ekle-purpose" class="ekle-alan" placeholder="Kullanım amacı (zorunlu)" />
+      <p id="hata-purpose" class="hata-mesaji" style="color:#c0392b; font-size:12px; margin:0"></p>
       <input id="ekle-owner" class="ekle-alan" placeholder="Geliştiren" />
       <input id="ekle-note" class="ekle-alan" placeholder="Not" />
-      <input id="ekle-url" class="ekle-alan" placeholder="Site adresi (URL) — isteğe bağlı" />
+      <input id="ekle-url" class="ekle-alan" placeholder="Site adresi (URL) — http:// veya https:// ile" />
+      <p id="hata-url" class="hata-mesaji" style="color:#c0392b; font-size:12px; margin:0"></p>
       <select id="ekle-subscription" class="ekle-alan">
         <option value="Ücretsiz">Ücretsiz</option>
         <option value="Freemium">Freemium</option>
         <option value="Ücretli">Ücretli</option>
+      </select>
+      <!-- Durum menüsü: ilk seçenek "Aktif" olduğu için varsayılan odur. -->
+      <select id="ekle-durum" class="ekle-alan">
+        <option value="Aktif">Aktif</option>
+        <option value="Deneme">Deneme</option>
+        <option value="Pasif">Pasif</option>
       </select>
       <div class="ekle-aksiyonlar">
         <button type="submit" class="ekle-btn">Ekle</button>
         <button type="button" id="ekle-iptal-btn" class="ekle-iptal-btn">İptal</button>
       </div>
     </form>
+  </section>
+
+  <!-- JSON dışa aktarma: butona basınca mevcut liste JSON olarak görünür. -->
+  <section class="export-alani">
+    <button id="export-btn" class="ekle-ac-btn">📤 JSON Dışa Aktar</button>
+    <textarea id="export-cikti" readonly hidden
+      style="width:100%; height:240px; margin-top:8px; font-family:monospace; font-size:12px"></textarea>
   </section>
 
   <!-- Sayfanın ana içeriği: kartları app.js içindeki renderTools() dolduracak.
